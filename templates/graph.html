@@ -1,1 +1,7 @@
-<img src="{{ image }}" alt="Graph">
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <img src="{{ image }}" alt="Graph">
+{% endblock %}
