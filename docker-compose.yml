@@ -2,6 +2,8 @@ version: "3.9"
 services:
   web:
     build: 
-      context: .
+        context: .
     volumes:
-      - ./static:/opt/technest/static
+        - ./static:/opt/technest/static
+    ports:
+        - "5000:5000"
