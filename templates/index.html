@@ -1,12 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>NBA Stats</title>
 </head>
+
 <body>
     <h1>NBA Stats</h1>
+    <form action="" method="post">
+        <div>
+            <input type="radio" id="points" name="statistic" value="points">
+            <label for="points">Points per Game</label>
+
+            <input type="radio" id="assists" name="statistic" value="assists">
+            <label for="assists">Assists per Game</label>
+
+            <input type="radio" id="rebounds" name="statistic" value="rebounds">
+            <label for="rebounds">Rebounds per Game</label>
+
+            <input type="radio" id="steals" name="statistic" value="steals">
+            <label for="steals">Steals per Game</label>
+
+            <input type="radio" id="minutes" name="statistic" value="minutes">
+            <label for="minutes">Minutes per Game</label>
+        </div>
+        <div>
+            <input type="radio" id="5" name="limit" value="5">
+            <label for="5">5</label>
+
+            <input type="radio" id="10" name="limit" value="10">
+            <label for="10">10</label>
+
+            <input type="radio" id="15" name="limit" value="15">
+            <label for="15">15</label>
+
+            <input type="radio" id="20" name="limit" value="20">
+            <label for="20">20</label>
+
+            <input type="radio" id="25" name="limit" value="25">
+            <label for="25">25</label>
+        </div>
+        <div>
+            <input type="radio" id="ascending" name="arrange" value="ascending">
+            <label for="ascending">Ascending</label>
+
+            <input type="radio" id="descending" name="arrange" value="descending">
+            <label for="descending">Descending</label>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
 </body>
+
 </html>

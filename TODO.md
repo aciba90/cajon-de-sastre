@@ -6,3 +6,4 @@ black
 doc
 refactor makefile
 e2e tests
+dockerignore

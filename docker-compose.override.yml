@@ -7,7 +7,7 @@ services:
         APP_REQUIREMENTS: requirements-dev.txt
     command: uvicorn app.main:app --host 0.0.0.0 --port 80 --reload
     volumes:
-      - './:/usr/src'
+      - './:/opt/technest'
     ports:
       - 8883:80
     environment:
