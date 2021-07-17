@@ -1,10 +1,19 @@
+* {
+    font-family: sans-serif, Arial;
+}
+
 h1 {
     color: green;
+    width: 100%;
+    text-align: center;
 }
 
 .border-green {
     border: 2px solid green;
-    border-radius: 4px;
+}
+
+.no-top-border {
+    border-top: 0;
 }
 
 .container-row {
@@ -18,11 +27,18 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
+    align-items: center;
+}
+
+.stretch {
     align-items: stretch;
 }
 
 .radio-container {
-    margin: 10px;
+    margin: 0;
+    align-self: flex-end;
+    width: 80%;
 }
 
 /* Invisible to be focusable and navigable by keyboard */
@@ -32,17 +48,14 @@ h1 {
     width: 0;
 }
 
-.radio-container label {
+.radio-container label, .radio-wrapper div:first-child, input[type="submit"] {
     display: inline-block;
-    background-color: #ddd;
     padding: 10px 20px;
-    font-family: sans-serif, Arial;
     font-size: 16px;
 }
 
 .radio-container input[type="radio"]:checked + label {
     background-color:#bfb;
-    border-color: red;
 }
 
 .radio-container input[type="radio"]:focus + label {
@@ -52,3 +65,14 @@ h1 {
 .radio-container label:hover {
     background-color: #dfd;
 }
+
+.margin {
+    margin: 2em;
+}
+
+.radio-wrapper {
+    justify-content: flex-start;
+    /* margin: 10px; */
+    width: 190px;
+}
+
