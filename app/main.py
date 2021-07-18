@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass
 from enum import Enum
 from io import BytesIO
-from pathlib import Path
-from typing import Final
+from itertools import product
+from typing import Set
 
+import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 from fastapi import FastAPI, Form, Request
@@ -14,17 +14,13 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.responses import StreamingResponse
 
+import app.config as Config
+
+matplotlib.use("agg")
+
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
-
-class Config:
-    CSV_PATH = Path(os.getenv("APP_CSV_PATH", ""))
-    FULL_NAME_COL: Final[str] = "FULL NAME"
-
-
-assert Config.CSV_PATH.is_file(), "CSV data file not found!"
 
 
 class Statistic(str, Enum):
@@ -75,25 +71,40 @@ def index(request: Request):
 @app.post("/nbastats")
 def compute_stats_controller(
     request: Request,
-    statistic: Statistic = Form(...),
-    limit: Limit = Form(...),
-    arrange: Arrange = Form(...),
+    statistics: Set[Statistic] = Form(...),
+    limits: Set[Limit] = Form(...),
+    arranges: Set[Arrange] = Form(...),
 ):
     """
     TODO doc, validation
     """
-    graph_config = GraphConfig(statistic=statistic, limit=limit, arrange=arrange)
-    image = app.url_path_for(
-        "graphs_controller",
-        statistic=graph_config.statistic.value,
-        limit=graph_config.limit.value,
-        arrange=graph_config.arrange.value,
+
+    def adapt_to_set(value, final_type):
+        if not isinstance(value, set):
+            return {final_type(value)}
+        return value
+
+    statistics = adapt_to_set(statistics, Statistic)
+    limits = adapt_to_set(limits, Limit)
+    arranges = adapt_to_set(arranges, Arrange)
+
+    graph_configs = tuple(
+        map(lambda x: GraphConfig(*x), product(statistics, limits, arranges))
+    )
+    images = tuple(
+        app.url_path_for(
+            "graphs_controller",
+            statistic=graph_config.statistic.value,
+            limit=graph_config.limit.value,
+            arrange=graph_config.arrange.value,
+        )
+        for graph_config in graph_configs
     )
     return templates.TemplateResponse(
         "graph.html",
         {
             "request": request,
-            "image": image,
+            "images": images,
         },
     )
 
@@ -116,6 +127,13 @@ class GraphConfig:
     limit: Limit
     arrange: Arrange
 
+    def get_graphs_info(self):
+        return product(
+            map(self.statistic, lambda x: x.value),
+            map(self.limit, lambda x: x.value),
+            map(self.arrange, lambda x: x.value),
+        )
+
 
 def _load_csv() -> pd.DataFrame:
     """TODO"""
@@ -133,9 +151,16 @@ def compute_graph(graph_config: GraphConfig) -> BytesIO:
     df = df[[Config.FULL_NAME_COL, y_column_name]].sort_values(
         axis=0, by=y_column_name, ascending=is_ascending
     )
-    df.iloc[:n_items, :].plot(Config.FULL_NAME_COL, y_column_name, kind="bar")
-
+    fig, ax = plt.subplots(
+        dpi=Config.DPI, figsize=(Config.WIDTH_INCHES, Config.HEIGHT_INCHES)
+    )
+    df.iloc[:n_items, :].plot(Config.FULL_NAME_COL, y_column_name, kind="bar", ax=ax)
     b = BytesIO()
-    plt.savefig(b, format="png")
+    fig.savefig(
+        b,
+        format=Config.IMAGE_FORMAT,
+        bbox_inches="tight",  # To not cut x's labels.
+    )
+    plt.close(fig)
     b.seek(0)
     return b

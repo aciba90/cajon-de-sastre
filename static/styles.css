@@ -1,19 +1,36 @@
+:root {
+    --main-color: green;
+    --padding-vertical: 0.7em;
+}
+
 * {
     font-family: sans-serif, Arial;
 }
 
 h1 {
-    color: green;
+    color: var(--main-color);
     width: 100%;
     text-align: center;
 }
 
-.border-green {
-    border: 2px solid green;
+select[multiple] {
+    background-color: transparent;
+    padding: 0 1em 0 0;
+    margin: 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: inherit;
+    border: 2px solid var(--main-color);
+    border-top: 0;
+    padding-right: 0;
+    width: 80%;
+    align-self: flex-end;
 }
 
-.no-top-border {
-    border-top: 0;
+.border-green {
+    border: 2px solid var(--main-color);
 }
 
 .container-row {
@@ -31,38 +48,29 @@ h1 {
     align-items: center;
 }
 
-.stretch {
+.radio-container {
+    margin: 0;
+    justify-content: flex-start;
+    width: 14em;
+    margin: 2em;
     align-items: stretch;
 }
 
-.radio-container {
-    margin: 0;
-    align-self: flex-end;
-    width: 80%;
+.radio-container label {
+    border: 2px solid var(--main-color);
 }
 
-/* Invisible to be focusable and navigable by keyboard */
-.radio-container input[type="radio"] {
-    opacity: 0;
-    position: fixed;
-    width: 0;
-}
-
-.radio-container label, .radio-wrapper div:first-child, input[type="submit"] {
-    display: inline-block;
-    padding: 10px 20px;
+.radio-container label, .radio-container option, input[type="submit"] {
+    padding: var(--padding-vertical) 5px;
     font-size: 16px;
 }
 
-.radio-container input[type="radio"]:checked + label {
-    background-color:#bfb;
+input[type="submit"] {
+    background: transparent;
+    padding: var(--padding-vertical) 4em;
 }
 
-.radio-container input[type="radio"]:focus + label {
-    border: 2px dashed #444;
-}
-
-.radio-container label:hover {
+option:hover {
     background-color: #dfd;
 }
 
@@ -70,9 +78,8 @@ h1 {
     margin: 2em;
 }
 
-.radio-wrapper {
-    justify-content: flex-start;
-    /* margin: 10px; */
-    width: 190px;
+.container-graph {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
 }
-

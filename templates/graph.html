@@ -3,5 +3,9 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-    <img src="{{ image }}" alt="Graph">
+    <div class="container-graph">
+        {% for image in images %}
+            <img src="{{ image }}" alt="Graph" width="400" height="400">
+        {% endfor %}
+    </div>
 {% endblock %}
