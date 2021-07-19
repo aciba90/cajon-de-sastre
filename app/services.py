@@ -51,6 +51,7 @@ def compute_graph(graph_config: GraphConfig) -> bytes:
 
     Example:
     --------
+    >>> from app.models import Limit, Arrange
     >>> graph_config = GraphConfig(
     ...     statistic=Statistic.POINTS, limit=Limit.FIVE, arrange=Arrange.ASCENDING
     ... )

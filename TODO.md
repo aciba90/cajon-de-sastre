@@ -1,11 +1,7 @@
-query param?
-Warning: Layout was forced before the page was fully loaded. If stylesheets are not yet loaded this may cause a flash of unstyled content.
-
 DOCKER ENV VARS: config, gunicorn config, timeout
 
 Readme
 fix deps
-doc openapi
 e2e tests ?
 dockerignore
 logging

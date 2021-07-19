@@ -32,8 +32,12 @@ ALL_GRAPH_CONFIGS = list(
 @pytest.mark.parametrize(["statistic", "limit", "arrange"], ALL_GRAPH_CONFIGS)
 def test_graph_get_200(statistic, limit, arrange):
     """Tests that the graph page is correct."""
-    url = f"/graphs/{statistic}/{limit}/{arrange}"
-    response = client.get(url)
+    payload = {
+        "statistic": statistic,
+        "limit": limit,
+        "arrange": arrange,
+    }
+    response = client.get("/graphs", params=payload)
     assert response.status_code == 200
     assert b"\x89PNG" in response.content
 
@@ -48,8 +52,12 @@ def test_graph_get_200(statistic, limit, arrange):
 )
 def test_graph_get_404(statistic, limit, arrange):
     """Tests that the graph page is correct."""
-    url = f"/graphs/{statistic}/{limit}/{arrange}"
-    response = client.get(url)
+    payload = {
+        "statistic": statistic,
+        "limit": limit,
+        "arrange": arrange,
+    }
+    response = client.get("/graphs", params=payload)
     assert response.status_code == 422
 
 

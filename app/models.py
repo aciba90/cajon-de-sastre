@@ -1,7 +1,8 @@
 """Contains Models"""
-from enum import Enum
 from dataclasses import asdict, dataclass
+from enum import Enum
 from typing import Dict
+from urllib.parse import urlencode
 
 
 class Statistic(str, Enum):
@@ -114,3 +115,19 @@ arrange=<Arrange.ASCENDING: 'ascending'>)
         """
         # return asdict(self)
         return {k: v.value for k, v in asdict(self).items()}
+
+    def build_url(self, base_url: str) -> str:
+        """Builds a url by joining `base_url` and `self`, enconded as query params.
+
+        Example:
+        --------
+        >>> graph_config = GraphConfig(
+        ...     statistic=Statistic.POINTS, limit=Limit.FIVE, arrange=Arrange.ASCENDING
+        ... )
+        >>> graph_config.build_url("<base_url>")
+        '<base_url>?statistic=points&limit=5&arrange=ascending'
+
+        :param base_url: Base url to compose with.
+        :return: Composed url.
+        """
+        return f"{base_url}?{urlencode(self.to_dict())}"

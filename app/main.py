@@ -67,15 +67,13 @@ def handle_form(
     graph_configs = tuple(
         map(lambda x: GraphConfig(*x), product(statistics, limits, arranges))
     )
-    images = tuple(
-        app.url_path_for("get_graph", **graph_config.to_dict())
-        for graph_config in graph_configs
-    )
+    base_url = app.url_path_for("get_graph")
+    graph_urls = tuple(map(lambda g: g.build_url(base_url), graph_configs))
     return templates.TemplateResponse(
         "graphs.html",
         {
             "request": request,
-            "images": images,
+            "images": graph_urls,
             "width": Config.WIDTH,
             "height": Config.HEIGHT,
         },
@@ -83,7 +81,7 @@ def handle_form(
 
 
 @app.get(
-    "/graphs/{statistic}/{limit}/{arrange}",
+    "/graphs",
     tags=["graphs"],
     summary="Retrieves a graph image.",
     response_description="Computed graph image.",
