@@ -7,3 +7,9 @@ services:
         - ./static:/opt/technest/static
     ports:
         - "5000:80"
+    environment:
+        # APP_WORKERS:
+        APP_WIDTH: 400
+        APP_HEIGHT: 400
+        APP_DPI: 96
+        APP_IMAGE_FORMAT: png

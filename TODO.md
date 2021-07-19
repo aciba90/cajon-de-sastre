@@ -1,4 +1,4 @@
-DOCKER ENV VARS: config, gunicorn config, timeout
+DOCKER ENV VARS: gunicorn config, timeout
 
 Readme
 fix deps
