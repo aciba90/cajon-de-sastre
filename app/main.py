@@ -8,7 +8,7 @@ from enum import Enum
 from functools import cache
 from io import BytesIO
 from itertools import product
-from typing import Set, Final, List
+from typing import Set, Final, List, TypeVar, Callable, Union
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -111,6 +111,29 @@ def render_form(request: Request):
     return templates.TemplateResponse("form.html", {"request": request})
 
 
+T = TypeVar('T')
+
+
+def _normalize_to_set(value: str | Set[T], final_type: Callable[..., T]) -> Set[T]:
+    """Normalize value to be always a ´Set[final_type]´.
+
+    Example:
+    --------
+    >>> _normalize_to_set({Statistic.POINTS}, Statistic)
+    {<Statistic.POINTS: 'points'>}
+    >>> _normalize_to_set("points", Statistic)
+    {<Statistic.POINTS: 'points'>}
+
+    :param value: string or set.
+    :param final_type: Desired type of the scalar value.
+    :return: If the input is a set then it returns it; else returns a set with
+    ´final_type(value)´.
+    """
+    if not isinstance(value, set):
+        return {final_type(value)}
+    return value
+
+
 @app.post("/nbastats")
 def handle_form(
     request: Request,
@@ -126,15 +149,9 @@ def handle_form(
     :param arranges: Set of instances of ´Arrange´ to generate graphs with.
     """
 
-    def adapt_to_set(value, final_type):
-        """TODO"""
-        if not isinstance(value, set):
-            return {final_type(value)}
-        return value
-
-    statistics = adapt_to_set(statistics, Statistic)
-    limits = adapt_to_set(limits, Limit)
-    arranges = adapt_to_set(arranges, Arrange)
+    # statistics = _normalize_to_set(statistics, Statistic)
+    # limits = _normalize_to_set(limits, Limit)
+    # arranges = _normalize_to_set(arranges, Arrange)
 
     graph_configs = tuple(
         map(lambda x: GraphConfig(*x), product(statistics, limits, arranges))
