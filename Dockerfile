@@ -22,7 +22,6 @@ COPY --chown=${APP_USER}:${APP_USER} ./app ./app
 COPY --chown=${APP_USER}:${APP_USER} ./templates ./templates
 COPY --chown=${APP_USER}:${APP_USER} ./static ./static
 
-# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
 COPY --chown=${APP_USER}:${APP_USER} runtime/start.sh .
 COPY --chown=${APP_USER}:${APP_USER} runtime/config.py .
-CMD ["bash", "start.sh"]
+CMD ["./start.sh"]

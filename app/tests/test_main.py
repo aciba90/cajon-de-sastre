@@ -78,6 +78,8 @@ def test_form_post_200(statistics, limits, arranges):
         ("asdfa", "5", "ascending"),
         ([], ["10", "5"], "descending"),
         (["assists", "steals"], ["45", "5"], ["descending", "ascending"]),
+        ([], [], []),
+        ("", "", ""),
     ],
 )
 def test_form_post_400(statistics, limits, arranges):
