@@ -11,4 +11,5 @@ services:
     ports:
         - 8883:80
     environment:
-        DEBUG: 'true'
+        LOG_LEVEL: DEBUG
+

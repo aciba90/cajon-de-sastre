@@ -1,5 +1,4 @@
 """Service operations."""
-import logging
 from functools import cache
 from io import BytesIO
 from typing import Final, List
@@ -9,6 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 import app.config as Config
+from app import logger
 from app.models import GraphConfig, Statistic
 
 matplotlib.use("agg")
@@ -62,7 +62,7 @@ def compute_graph(graph_config: GraphConfig) -> bytes:
     generate.
     :return: Computed graph in bytes.
     """
-    logging.info(f"Compute graph {graph_config}")
+    logger.error(f"Compute graph {graph_config}")
     df = _read_csv()
 
     y_column_name = graph_config.statistic.get_column_name()

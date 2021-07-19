@@ -1,9 +1,7 @@
-
 Readme
 fix deps
 e2e tests ?
-dockerignore
-logging
+dockerignore / clean command
 asynch/await
 Cache decorator
 

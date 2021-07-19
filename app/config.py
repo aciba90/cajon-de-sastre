@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 from typing import Final
+import logging
 
 
 def _to_inches(pixels: int, dpi: float) -> float:
@@ -22,3 +23,4 @@ DPI: Final[float] = float(os.getenv("APP_DPI", 96))
 WIDTH_INCHES: Final[float] = _to_inches(WIDTH, DPI)
 HEIGHT_INCHES: Final[float] = _to_inches(HEIGHT, DPI)
 IMAGE_FORMAT: Final[str] = os.getenv("APP_IMAGE_FORMAT", "png")
+LOG_LEVEL = logging.getLevelName(os.environ.get("LOG_LEVEL", "INFO"))
