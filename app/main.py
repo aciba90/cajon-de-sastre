@@ -148,7 +148,14 @@ def handle_form(
 
 @app.get("/graphs/{statistic}/{limit}/{arrange}")
 def get_graph(statistic: Statistic, limit: Limit, arrange: Arrange):
-    """TODO"""
+    """Retrieves a graph image.
+
+    :param statistic: Instance of ´Statistic´ telling what dependent variable to
+    visualize.
+    :param limit: Instance of ´Limit´ telling how many data points to visualize.
+    :param arrange: Instance of ´arrange´ telling how to sort the data points.
+    :return: Computed streamed graph image.
+    """
     graph_config = GraphConfig(statistic=statistic, limit=limit, arrange=arrange)
     image = compute_graph(graph_config)
     image_buffer = BytesIO(image)
