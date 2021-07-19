@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from enum import Enum
 from functools import cache
 from io import BytesIO
 from itertools import product
-from typing import Set, Final, List, TypeVar, Callable, Union
+from typing import Dict, Final, List, Set
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -107,31 +107,12 @@ class Arrange(str, Enum):
 
 @app.get("/nbastats")
 def render_form(request: Request):
-    """Renders the graph form page."""
-    return templates.TemplateResponse("form.html", {"request": request})
+    """Renders the graph form page.
 
-
-T = TypeVar('T')
-
-
-def _normalize_to_set(value: str | Set[T], final_type: Callable[..., T]) -> Set[T]:
-    """Normalize value to be always a ´Set[final_type]´.
-
-    Example:
-    --------
-    >>> _normalize_to_set({Statistic.POINTS}, Statistic)
-    {<Statistic.POINTS: 'points'>}
-    >>> _normalize_to_set("points", Statistic)
-    {<Statistic.POINTS: 'points'>}
-
-    :param value: string or set.
-    :param final_type: Desired type of the scalar value.
-    :return: If the input is a set then it returns it; else returns a set with
-    ´final_type(value)´.
+    :param request: The request.
+    :return: Rendered ´form.html´ page.
     """
-    if not isinstance(value, set):
-        return {final_type(value)}
-    return value
+    return templates.TemplateResponse("form.html", {"request": request})
 
 
 @app.post("/nbastats")
@@ -147,22 +128,13 @@ def handle_form(
     :param statistics: Set of instances of ´Statistic´ to generate graphs with.
     :param limits: Set of instances of Limit to generate graphs with.
     :param arranges: Set of instances of ´Arrange´ to generate graphs with.
+    :return: Rendered ´graphs.html´ page.
     """
-
-    # statistics = _normalize_to_set(statistics, Statistic)
-    # limits = _normalize_to_set(limits, Limit)
-    # arranges = _normalize_to_set(arranges, Arrange)
-
     graph_configs = tuple(
         map(lambda x: GraphConfig(*x), product(statistics, limits, arranges))
     )
     images = tuple(
-        app.url_path_for(
-            "get_graph",
-            statistic=graph_config.statistic.value,
-            limit=graph_config.limit.value,
-            arrange=graph_config.arrange.value,
-        )
+        app.url_path_for("get_graph", **graph_config.to_dict())
         for graph_config in graph_configs
     )
     return templates.TemplateResponse(
@@ -179,7 +151,8 @@ def get_graph(statistic: Statistic, limit: Limit, arrange: Arrange):
     """TODO"""
     graph_config = GraphConfig(statistic=statistic, limit=limit, arrange=arrange)
     image = compute_graph(graph_config)
-    return StreamingResponse(BytesIO(image), media_type="image/png")
+    image_buffer = BytesIO(image)
+    return StreamingResponse(image_buffer, media_type="image/png")
 
 
 @dataclass(frozen=True)
@@ -197,8 +170,28 @@ arrange=<Arrange.ASCENDING: 'ascending'>)
     limit: Limit
     arrange: Arrange
 
+    def to_dict(self) -> Dict:
+        """
+        Converts ´self´ to a dict, extracting the enum values of the values.
 
-_ALL_COLS: Final[List[str]] = [Config.FULL_NAME_COL] + list(map(lambda x: x.get_column_name(), Statistic))
+        Example:
+        --------
+        >>> graph_config = GraphConfig(
+        ...     statistic=Statistic.POINTS, limit=Limit.FIVE, arrange=Arrange.ASCENDING
+        ... )
+        >>> graph_config.to_dict()
+        {'statistic': 'points', 'limit': '5', 'arrange': 'ascending'}
+
+        :return: Dict containing attribute names as keys and the enum values of the
+        attributes as values.
+        """
+        # return asdict(self)
+        return {k: v.value for k, v in asdict(self).items()}
+
+
+_ALL_COLS: Final[List[str]] = [Config.FULL_NAME_COL] + list(
+    map(lambda x: x.get_column_name(), Statistic)
+)
 
 
 def _read_csv() -> pd.DataFrame:
@@ -230,7 +223,20 @@ def _read_csv() -> pd.DataFrame:
 
 @cache
 def compute_graph(graph_config: GraphConfig) -> bytes:
-    """TODO"""
+    """Computes the graph associated with ´graph_config´.
+
+    Example:
+    --------
+    >>> graph_config = GraphConfig(
+    ...     statistic=Statistic.POINTS, limit=Limit.FIVE, arrange=Arrange.ASCENDING
+    ... )
+    >>> compute_graph(graph_config)
+    b'\x89PNG...'
+
+    :param graph_config: Instance of ´GraphConfig´ that determines what kind of graph to
+    generate.
+    :return: Computed graph in bytes.
+    """
     logging.info(f"Compute graph {graph_config}")
     df = _read_csv()
 
