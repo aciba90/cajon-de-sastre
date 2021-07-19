@@ -22,6 +22,5 @@ COPY --chown=${APP_USER}:${APP_USER} ./app ./app
 COPY --chown=${APP_USER}:${APP_USER} ./templates ./templates
 COPY --chown=${APP_USER}:${APP_USER} ./static ./static
 
-COPY --chown=${APP_USER}:${APP_USER} runtime/start.sh .
-COPY --chown=${APP_USER}:${APP_USER} runtime/config.py .
+COPY --chown=${APP_USER}:${APP_USER} production/* ./
 CMD ["./start.sh"]
