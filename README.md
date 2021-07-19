@@ -6,8 +6,8 @@ Technest Python Tech Challenge solution.
 
 ## Start production server
 
-To start the production server execute `docker-compose up -d` and access 
-http://localhost:5000/nbastats
+To start the production server execute `docker-compose up -d` and access
+[http://localhost:5000/nbastats](http://localhost:5000/nbastats)
 
 ## Development
 

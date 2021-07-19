@@ -78,6 +78,10 @@ option:hover {
     margin: 2em;
 }
 
+.wrap {
+    flex-wrap: wrap;
+}
+
 .container-graph {
     display: flex;
     flex-flow: row wrap;

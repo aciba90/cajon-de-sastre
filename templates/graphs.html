@@ -5,7 +5,7 @@
 {% block content %}
     <div class="container-graph">
         {% for image in images %}
-            <img src="{{ image }}" alt="Graph" width="400" height="400">
+            <img src="{{ image }}" alt="Graph" width="{{ width }}" height="{{ height }}">
         {% endfor %}
     </div>
 {% endblock %}

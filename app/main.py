@@ -142,6 +142,8 @@ def handle_form(
         {
             "request": request,
             "images": images,
+            "width": Config.WIDTH,
+            "height": Config.HEIGHT,
         },
     )
 
