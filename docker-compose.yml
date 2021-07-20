@@ -12,6 +12,4 @@ services:
         APP_TIMEOUT: 30
         APP_WIDTH: 400
         APP_HEIGHT: 400
-        APP_DPI: 96
-        APP_IMAGE_FORMAT: png
         LOG_LEVEL: INFO

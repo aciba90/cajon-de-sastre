@@ -1,13 +1,8 @@
 """Integration tests"""
-from itertools import product
-
 import pytest
-from fastapi.testclient import TestClient
 
-from app.main import Arrange, Limit, Statistic
-from app.main import app as app_
-
-client = TestClient(app_)
+import app.tests.config as Config
+from app.tests.config import UrlPath, client
 
 
 def test_form_get_200():
@@ -20,26 +15,117 @@ def test_form_get_200():
     assert "<form" in html
 
 
-ALL_GRAPH_CONFIGS = list(
-    product(
-        map(lambda x: x.value, Statistic),
-        map(lambda x: x.value, Limit),
-        map(lambda x: x.value, Arrange),
-    )
+@pytest.mark.parametrize(
+    ["statistic", "limit", "arrange", "name", "data_x", "data_y"],
+    [
+        (
+            Config.POINTS,
+            Config.FIVE,
+            Config.ASCENDING,
+            "PointsPG",
+            [
+                "Greg Whittington",
+                "Ignas Brazdeikis",
+                "Gary Clark",
+                "Gary Clark",
+                "Noah Vonleh",
+            ],
+            [0.0, 0.0, 0.0, 0.0, 0.0],
+        ),
+        (
+            Config.POINTS,
+            Config.TWENTY_FIVE,
+            Config.ASCENDING,
+            "PointsPG",
+            [
+                "Greg Whittington",
+                "Ignas Brazdeikis",
+                "Gary Clark",
+                "Gary Clark",
+                "Noah Vonleh",
+                "Will Magnay",
+                "Ashton Hagans",
+                "Anzejs Pasecniks",
+                "Theo Pinson",
+                "Terrance Ferguson",
+                "Jaylen Adams",
+                "Jared Harper",
+                "Chris Silva",
+                "Jared Dudley",
+                "Tyler Cook",
+                "Ignas Brazdeikis",
+                "Ty-Shon Alexander",
+                "Brian Bowen II",
+                "Rodions Kurucs",
+                "Cameron Reynolds",
+                "Keljin Blevins",
+                "Nick Richards",
+                "Vincent Poirier",
+                "Kostas Antetokounmpo",
+                "Jordan Bell",
+            ],
+            [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.1,
+                0.2,
+                0.3,
+                0.4,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.6,
+                0.6,
+                0.6,
+                0.7,
+                0.7,
+                0.8,
+                0.8,
+                0.8,
+                1.0,
+            ],
+        ),
+        (
+            Config.POINTS,
+            Config.TEN,
+            Config.DESCENDING,
+            "PointsPG",
+            [
+                "Stephen Curry",
+                "Bradley Beal",
+                "Damian Lillard",
+                "Joel Embiid",
+                "Giannis Antetokounmpo",
+                "Luka Doncic",
+                "Zach LaVine",
+                "Zion Williamson",
+                "Kevin Durant",
+                "Kyrie Irving",
+            ],
+            [32.0, 31.3, 28.7, 28.5, 28.1, 27.7, 27.4, 27.0, 26.9, 26.9],
+        ),
+    ],
 )
-
-
-@pytest.mark.parametrize(["statistic", "limit", "arrange"], ALL_GRAPH_CONFIGS)
-def test_graph_get_200(statistic, limit, arrange):
+def test_graph_get_200(statistic, limit, arrange, name, data_x, data_y):
     """Tests that the graph page is correct."""
     payload = {
         "statistic": statistic,
         "limit": limit,
         "arrange": arrange,
     }
-    response = client.get("/graphs", params=payload)
+    response = client.get(UrlPath.GRAPHS.get_url(), params=payload)
     assert response.status_code == 200
-    assert b"\x89PNG" in response.content
+    data = response.json()
+
+    expected_data = {"data_x": data_x, "data_y": data_y, "name": name}
+    assert data == expected_data
 
 
 @pytest.mark.parametrize(
@@ -57,7 +143,7 @@ def test_graph_get_404(statistic, limit, arrange):
         "limit": limit,
         "arrange": arrange,
     }
-    response = client.get("/graphs", params=payload)
+    response = client.get(UrlPath.GRAPHS.get_url(), params=payload)
     assert response.status_code == 422
 
 
@@ -72,11 +158,11 @@ def test_graph_get_404(statistic, limit, arrange):
 def test_form_post_200(statistics, limits, arranges):
     """Tests the form submition."""
     payload = {"statistics": statistics, "limits": limits, "arranges": arranges}
-    response = client.post("/nbastats", data=payload)
+    response = client.post(UrlPath.NBA_STATS.get_url(), data=payload)
     assert response.status_code == 200
     html = response.text
     assert "html" in html
-    assert "img" in html
+    assert "canvas" in html
     assert "graph" in html
 
 
@@ -93,5 +179,5 @@ def test_form_post_200(statistics, limits, arranges):
 def test_form_post_400(statistics, limits, arranges):
     """Tests the form submition with invalid data."""
     payload = {"statistics": statistics, "limits": limits, "arranges": arranges}
-    response = client.post("/nbastats", data=payload)
+    response = client.post(UrlPath.NBA_STATS.get_url(), data=payload)
     assert response.status_code == 422
