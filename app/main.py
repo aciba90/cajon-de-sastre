@@ -43,7 +43,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
     summary="Renders the Graph Form page.",
     response_description="The rendered page.",
 )
-def render_form(request: Request):
+async def render_form(request: Request):
     return templates.TemplateResponse("form.html", {"request": request})
 
 
@@ -53,7 +53,7 @@ def render_form(request: Request):
     summary="Handles form submition and redirec to the Graphs' page.",
     response_description="Rendered ´graphs.html´ page.",
 )
-def handle_form(
+async def handle_form(
     request: Request,
     statistics: Set[Statistic] = Form(...),
     limits: Set[Limit] = Form(...),
@@ -95,6 +95,7 @@ def get_graph(statistic: Statistic, limit: Limit, arrange: Arrange):
     - **arrange**: Instance of _Arrange_ telling how to sort the data points.
     """
     graph_config = GraphConfig(statistic=statistic, limit=limit, arrange=arrange)
-    image = compute_graph(graph_config)
+    image_id = graph_config.get_id()
+    image = compute_graph(image_id, graph_config)
     image_buffer = BytesIO(image)
     return StreamingResponse(image_buffer, media_type="image/png")

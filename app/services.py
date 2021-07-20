@@ -1,5 +1,4 @@
 """Service operations."""
-from functools import cache
 from io import BytesIO
 from typing import Final, List
 
@@ -45,8 +44,7 @@ def _read_csv() -> pd.DataFrame:
     )
 
 
-@cache
-def compute_graph(graph_config: GraphConfig) -> bytes:
+def _compute_graph(graph_config: GraphConfig) -> bytes:
     """Computes the graph associated with ´graph_config´.
 
     Example:
@@ -55,14 +53,13 @@ def compute_graph(graph_config: GraphConfig) -> bytes:
     >>> graph_config = GraphConfig(
     ...     statistic=Statistic.POINTS, limit=Limit.FIVE, arrange=Arrange.ASCENDING
     ... )
-    >>> compute_graph(graph_config)
+    >>> _compute_graph(graph_config)
     b'\x89PNG...'
 
     :param graph_config: Instance of ´GraphConfig´ that determines what kind of graph to
     generate.
     :return: Computed graph in bytes.
     """
-    logger.error(f"Compute graph {graph_config}")
     df = _read_csv()
 
     y_column_name = graph_config.statistic.get_column_name()
@@ -84,3 +81,17 @@ def compute_graph(graph_config: GraphConfig) -> bytes:
     )
     plt.close(fig)
     return buffer.getvalue()
+
+
+def compute_graph(graph_id: str, graph_config: GraphConfig) -> bytes:
+    """TODO"""
+    PATH = Config.CACHE_PATH
+    graph_path = PATH / graph_id
+    if graph_path.is_file():
+        logger.info(f"Read cached graph {graph_id}")
+        return graph_path.read_bytes()
+    else:
+        logger.info(f"Compute graph {graph_id}")
+        graph = _compute_graph(graph_config)
+        graph_path.write_bytes(graph)
+        return graph

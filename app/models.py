@@ -131,3 +131,7 @@ arrange=<Arrange.ASCENDING: 'ascending'>)
         :return: Composed url.
         """
         return f"{base_url}?{urlencode(self.to_dict())}"
+
+    def get_id(self) -> str:
+        """TODO"""
+        return self.build_url("graph")

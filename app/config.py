@@ -15,6 +15,7 @@ _CSV = os.getenv("APP_CSV_PATH")
 assert _CSV is not None, "Define APP_CSV_PATH env variable!"
 CSV_PATH: Final[Path] = Path(_CSV)
 assert CSV_PATH.is_file(), "CSV data file not found!"
+CACHE_PATH: Final[Path] = CSV_PATH.parent
 
 FULL_NAME_COL: Final[str] = "FULL NAME"
 WIDTH: Final[int] = int(os.getenv("APP_WIDTH", 400))

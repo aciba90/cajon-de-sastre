@@ -1,9 +1,6 @@
 Readme
 fix deps
 e2e tests ?
-dockerignore / clean command
-asynch/await
-Cache decorator
 
 Review docker and docker-compose
 Docker size optimize (multi image)
