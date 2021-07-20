@@ -4,7 +4,7 @@ services:
         build: 
             context: .
             args:
-                APP_REQUIREMENTS: requirements-dev.txt
+                APP_REQUIREMENTS: requirements-prod.txt
             labels:
                 com.technest-example.name: "technest-nba-stats"
                 com.technest-example.description: "Web App to generate statistic graphs of NBA."
