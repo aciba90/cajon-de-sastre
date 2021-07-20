@@ -265,7 +265,7 @@ def test_graph_get_200(statistic, limit, arrange, name, data_x, data_y):
         ("asdf", FIVE, ASCENDING),
         (POINTS, "asdf", DESCENDING),
         (STEALS, TEN, "asdf"),
-        (STEALS, TEN, ""),
+        (STEALS, TWENTY, ""),
         (STEALS, TEN, TEN),
         (STEALS, DESCENDING, TEN),
     ],

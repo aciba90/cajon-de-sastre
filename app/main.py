@@ -11,14 +11,14 @@ import app.config as Config
 from app.models import Arrange, Graph, GraphConfig, Limit, Statistic
 from app.services import compute_graph
 
-tags_metadata = [  # TODO
+tags_metadata = [
     {
         "name": "forms",
-        "description": "Operations with users. The **login** logic is also here.",
+        "description": "Operations related to the form page.",
     },
     {
         "name": "graphs",
-        "description": "Manage items. So _fancy_ they have their own docs.",
+        "description": "Manage graph data.",
     },
 ]
 
@@ -46,7 +46,7 @@ async def render_form(request: Request):
 @app.post(
     "/nbastats",
     tags=["forms"],
-    summary="Handles form submition and redirec to the Graphs' page.",
+    summary="Handles form submition and redirects to the Graphs' page.",
     response_description="Rendered ´graphs.html´ page.",
 )
 async def handle_form(
@@ -55,7 +55,10 @@ async def handle_form(
     limits: Set[Limit] = Form(...),
     arranges: Set[Arrange] = Form(...),
 ):
-    """Params:
+    """
+    It injects the graph urls in to the page to be fetched and rendered with JavaScript.
+
+    Params:
 
     - **statistics**: Set of instances of _Statistic_ to generate graphs with.
     - **limits**: Set of instances of _Limit_ to generate graphs with.
@@ -78,8 +81,8 @@ async def handle_form(
 @app.get(
     "/api/graphs",
     tags=["graphs"],
-    summary="Retrieves a graph image.",
-    response_description="Computed graph data.",
+    summary="Retrieves graph data.",
+    response_description="Graph data.",
     response_model=Graph,
 )
 async def get_graph(statistic: Statistic, limit: Limit, arrange: Arrange) -> Graph:

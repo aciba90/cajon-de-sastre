@@ -137,6 +137,7 @@ arrange=<Arrange.ASCENDING: 'ascending'>)
 
 class Graph(BaseModel):
     """Model to store the data needed to visualize a Graph."""
+
     name: str
     data_x: List[str]
     data_y: List[float]

@@ -2,53 +2,17 @@
 {% block head %}
     {{ super() }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', path='/main.js') }}"></script> 
 {% endblock %}
 
 {% block content %}
     <div class="container-graph">
+        {# The in-line styles in "chart-container" are required to be here. More info:
+        https://www.chartjs.org/docs/latest/configuration/responsive.html#important-note #}
         {% for image in images %}
-            <canvas id="{{image}}" width="{{width}}" height="{{height}}" data-graph-url="{{image}}"></canvas>
+        <div class="chart-container" style="position: relative; height: {{ height }}px; width: {{ width }}px">
+            <canvas id="{{image}}" data-graph-url="{{image}}"></canvas>
+        </div>
         {% endfor %}
     </div>
-
-    <script>
-    function createChart(elementId, labels, data_y, label) {
-        var ctx = document.getElementById(elementId);
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: label,
-                    data: data_y,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-
-    function getGraphData(url, elementId) {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => createChart(elementId, data.data_x, data.data_y, data.name));
-    }
-
-    // createChart("myChart");
-    document.querySelectorAll("canvas").forEach(
-        canvas => {
-            console.log(canvas.dataset.graphUrl);
-            const graphUrl = canvas.dataset.graphUrl;
-            getGraphData(graphUrl, canvas.id);
-        }
-    );
-    </script>
 {% endblock %}
