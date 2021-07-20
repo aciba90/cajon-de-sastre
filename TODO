@@ -1,6 +1,5 @@
 Readme
 fix deps
-e2e tests ?
 
 Review docker and docker-compose
 Docker size optimize (multi image)

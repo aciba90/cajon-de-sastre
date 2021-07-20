@@ -134,12 +134,9 @@ arrange=<Arrange.ASCENDING: 'ascending'>)
         """
         return f"{base_url}?{urlencode(self.to_dict())}"
 
-    def get_id(self) -> str:
-        """TODO"""
-        return self.build_url("graph")
-
 
 class Graph(BaseModel):
+    """Model to store the data needed to visualize a Graph."""
     name: str
     data_x: List[str]
     data_y: List[float]

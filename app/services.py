@@ -28,6 +28,16 @@ def _read_csv() -> pd.DataFrame:
     AssistsPG     float64
     StealsPG      float64
     dtype: object
+    >>> df.describe()
+                  MPG    PointsPG  ReboundsPG   AssistsPG    StealsPG
+    count  626.000000  626.000000  626.000000  626.000000  626.000000
+    mean    19.528435    8.716134    3.590575    1.949201    0.611550
+    std      9.362613    6.411011    2.404547    1.846157    0.399788
+    min      1.800000    0.000000    0.000000    0.000000    0.000000
+    25%     12.100000    4.000000    1.900000    0.700000    0.300000
+    50%     19.500000    7.200000    3.200000    1.400000    0.580000
+    75%     27.300000   11.975000    4.800000    2.500000    0.877500
+    max     37.600000   32.000000   14.300000   11.700000    2.080000
 
     :return: Instance of ´pd.DataFrame´ containing the data.
     """
@@ -41,7 +51,22 @@ def _read_csv() -> pd.DataFrame:
 
 @cache
 def compute_graph(graph_config: GraphConfig) -> Graph:
-    """TODO"""
+    """Computes the graph associated with ´graph_config´.
+
+    Example:
+    --------
+    >>> from app.models import Limit, Arrange
+    >>> graph_config = GraphConfig(
+    ...     statistic=Statistic.POINTS, limit=Limit.FIVE, arrange=Arrange.ASCENDING
+    ... )
+    >>> compute_graph(graph_config)
+    Graph(name='PointsPG', data_x=['Greg Whittington', 'Ignas Brazdeikis', \
+'Gary Clark', 'Gary Clark', 'Noah Vonleh'], data_y=[0.0, 0.0, 0.0, 0.0, 0.0])
+
+    :param graph_config: Instance of ´GraphConfig´ that determines what kind of graph to
+    generate.
+    :return: Data needed to visualize the graph.
+    """
     df = _read_csv()
 
     y_column_name = graph_config.statistic.get_column_name()
