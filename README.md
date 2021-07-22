@@ -4,10 +4,16 @@
 
 Technest Python Tech Challenge solution.
 
+Web App to compute statistic graphs from NBA data. The web framework used is FastAPI,
+Gunicorn as server with Uvicorn workers.
+
 ## Start production server
 
 To start the production server execute `docker-compose up -d` and access
 [http://localhost:5000/nbastats](http://localhost:5000/nbastats)
+
+To see the doc open [http://localhost:5000/docs](http://localhost:5000/docs) or
+[http://localhost:5000/redoc](http://localhost:5000/redoc)
 
 ## Development
 

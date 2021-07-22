@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 {% block head %}
     {{ super() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', path='/main.js') }}"></script> 
 {% endblock %}
+
 {% block content %}
     <div class="container-graph">
+        {# The in-line styles in "chart-container" are required to be here. More info:
+        https://www.chartjs.org/docs/latest/configuration/responsive.html#important-note #}
         {% for image in images %}
-            <img src="{{ image }}" alt="Graph" width="{{ width }}" height="{{ height }}">
+        <div class="chart-container" style="position: relative; height: {{ height }}px; width: {{ width }}px">
+            <canvas id="{{image}}" data-graph-url="{{image}}"></canvas>
+        </div>
         {% endfor %}
     </div>
 {% endblock %}

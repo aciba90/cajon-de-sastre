@@ -1,16 +1,11 @@
 """Service operations."""
-from io import BytesIO
+from functools import cache
 from typing import Final, List
 
-import matplotlib
-import matplotlib.pyplot as plt
 import pandas as pd
 
 import app.config as Config
-from app import logger
-from app.models import GraphConfig, Statistic
-
-matplotlib.use("agg")
+from app.models import Graph, GraphConfig, Statistic
 
 _ALL_COLS: Final[List[str]] = [Config.FULL_NAME_COL] + list(
     map(lambda x: x.get_column_name(), Statistic)
@@ -33,6 +28,16 @@ def _read_csv() -> pd.DataFrame:
     AssistsPG     float64
     StealsPG      float64
     dtype: object
+    >>> df.describe()
+                  MPG    PointsPG  ReboundsPG   AssistsPG    StealsPG
+    count  626.000000  626.000000  626.000000  626.000000  626.000000
+    mean    19.528435    8.716134    3.590575    1.949201    0.611550
+    std      9.362613    6.411011    2.404547    1.846157    0.399788
+    min      1.800000    0.000000    0.000000    0.000000    0.000000
+    25%     12.100000    4.000000    1.900000    0.700000    0.300000
+    50%     19.500000    7.200000    3.200000    1.400000    0.580000
+    75%     27.300000   11.975000    4.800000    2.500000    0.877500
+    max     37.600000   32.000000   14.300000   11.700000    2.080000
 
     :return: Instance of ´pd.DataFrame´ containing the data.
     """
@@ -44,7 +49,8 @@ def _read_csv() -> pd.DataFrame:
     )
 
 
-def _compute_graph(graph_config: GraphConfig) -> bytes:
+@cache
+def compute_graph(graph_config: GraphConfig) -> Graph:
     """Computes the graph associated with ´graph_config´.
 
     Example:
@@ -53,12 +59,13 @@ def _compute_graph(graph_config: GraphConfig) -> bytes:
     >>> graph_config = GraphConfig(
     ...     statistic=Statistic.POINTS, limit=Limit.FIVE, arrange=Arrange.ASCENDING
     ... )
-    >>> _compute_graph(graph_config)
-    b'\x89PNG...'
+    >>> compute_graph(graph_config)
+    Graph(name='PointsPG', data_x=['Greg Whittington', 'Ignas Brazdeikis', \
+'Gary Clark', 'Gary Clark', 'Noah Vonleh'], data_y=[0.0, 0.0, 0.0, 0.0, 0.0])
 
     :param graph_config: Instance of ´GraphConfig´ that determines what kind of graph to
     generate.
-    :return: Computed graph in bytes.
+    :return: Data needed to visualize the graph.
     """
     df = _read_csv()
 
@@ -69,29 +76,6 @@ def _compute_graph(graph_config: GraphConfig) -> bytes:
     df = df[[Config.FULL_NAME_COL, y_column_name]].sort_values(
         axis=0, by=y_column_name, ascending=is_ascending
     )
-    fig, ax = plt.subplots(
-        dpi=Config.DPI, figsize=(Config.WIDTH_INCHES, Config.HEIGHT_INCHES)
-    )
-    df.iloc[:n_items, :].plot(Config.FULL_NAME_COL, y_column_name, kind="bar", ax=ax)
-    buffer = BytesIO()
-    fig.savefig(
-        buffer,
-        format=Config.IMAGE_FORMAT,
-        bbox_inches="tight",  # To not cut x's labels.
-    )
-    plt.close(fig)
-    return buffer.getvalue()
-
-
-def compute_graph(graph_id: str, graph_config: GraphConfig) -> bytes:
-    """TODO"""
-    PATH = Config.CACHE_PATH
-    graph_path = PATH / graph_id
-    if graph_path.is_file():
-        logger.info(f"Read cached graph {graph_id}")
-        return graph_path.read_bytes()
-    else:
-        logger.info(f"Compute graph {graph_id}")
-        graph = _compute_graph(graph_config)
-        graph_path.write_bytes(graph)
-        return graph
+    x = df.iloc[:n_items, 0].to_numpy().tolist()
+    y = df.iloc[:n_items, 1].to_numpy().tolist()
+    return Graph(name=y_column_name, data_x=x, data_y=y)

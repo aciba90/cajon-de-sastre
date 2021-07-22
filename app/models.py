@@ -1,8 +1,10 @@
 """Contains Models"""
 from dataclasses import asdict, dataclass
 from enum import Enum
-from typing import Dict
+from typing import Dict, List
 from urllib.parse import urlencode
+
+from pydantic import BaseModel
 
 
 class Statistic(str, Enum):
@@ -132,6 +134,10 @@ arrange=<Arrange.ASCENDING: 'ascending'>)
         """
         return f"{base_url}?{urlencode(self.to_dict())}"
 
-    def get_id(self) -> str:
-        """TODO"""
-        return self.build_url("graph")
+
+class Graph(BaseModel):
+    """Model to store the data needed to visualize a Graph."""
+
+    name: str
+    data_x: List[str]
+    data_y: List[float]
