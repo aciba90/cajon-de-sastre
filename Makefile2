@@ -1,0 +1,16 @@
+DB_NAME = sakila-mysql
+NETWORK_NAME = network-mysql
+
+run:
+	docker network create $(NETWORK_NAME)
+	docker run -p "127.0.0.1:3306:3306" --name $(DB_NAME) --network $(NETWORK_NAME) -e MYSQL_ROOT_PASSWORD=root -d mysql
+
+stop:
+	docker stop $(DB_NAME)
+
+prune:
+	docker network remove $(NETWORK_NAME)
+	docker rm $(DB_NAME) || true
+
+client:
+	TODO
