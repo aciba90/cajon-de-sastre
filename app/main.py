@@ -1,8 +1,8 @@
-from dataclasses import dataclass
-from typing import List, Iterator
-from functools import cached_property
-from typing import Dict
+"""TODO"""
 
+from dataclasses import dataclass
+from functools import cached_property
+from typing import Dict, Iterator, Set
 
 _lookup: Dict[str, int] = {
     "A": 2,
@@ -86,7 +86,7 @@ def _compute_anagram_hash(word: str) -> int:
 @dataclass(frozen=True)
 class Word:
     """
-
+    TODO
     """
 
     word: str
@@ -102,12 +102,24 @@ class Word:
 
 
 class WordRepo:
+    """TODO"""
+
     def __init__(self):
-        self._data: List[Word] = []
+        self._data: Set[Word] = set()
 
     def add(self, word: Word):
-        self._data.append(word)
+        """[summary]
+
+        :param word: [description]
+        :type word: Word
+        """
+        self._data.add(word)
 
     def get_all(self) -> Iterator[Word]:
+        """[summary]
+
+        :yield: [description]
+        :rtype: Iterator[Word]
+        """
         for word in self._data:
             yield word
