@@ -1,8 +1,11 @@
-"""TODO"""
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json
+
 
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Dict, Iterator, Set
+from typing import Dict
+
 
 _lookup: Dict[str, int] = {
     "A": 2,
@@ -60,16 +63,16 @@ _lookup: Dict[str, int] = {
 }
 
 
-def _compute_anagram_hash(word: str) -> int:
+def compute_anagram_hash(word: str) -> int:
     """[summary]
 
     Example:
     --------
-    >>> _compute_anagram_hash("asdf")
+    >>> compute_anagram_hash("asdf")
     12194
-    >>> _compute_anagram_hash("fdas")
+    >>> compute_anagram_hash("fdas")
     12194
-    >>> _compute_anagram_hash("aas")
+    >>> compute_anagram_hash("aas")
     268
 
     :param word: [description]
@@ -83,6 +86,7 @@ def _compute_anagram_hash(word: str) -> int:
     return anagram_hash
 
 
+@dataclass_json
 @dataclass(frozen=True)
 class Word:
     """
@@ -91,35 +95,4 @@ class Word:
 
     word: str
     position: int
-
-    @cached_property
-    def anagram_hash(self) -> int:
-        """Computed anagram hash property.
-
-        :return: Anagram hash.
-        """
-        return _compute_anagram_hash(self.word)
-
-
-class WordRepo:
-    """TODO"""
-
-    def __init__(self):
-        self._data: Set[Word] = set()
-
-    def add(self, word: Word):
-        """[summary]
-
-        :param word: [description]
-        :type word: Word
-        """
-        self._data.add(word)
-
-    def get_all(self) -> Iterator[Word]:
-        """[summary]
-
-        :yield: [description]
-        :rtype: Iterator[Word]
-        """
-        for word in self._data:
-            yield word
+    anagram_hash: int
