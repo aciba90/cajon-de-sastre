@@ -3,7 +3,7 @@ PYTHON=python
 TARGET_FOLDERS=app tests
 
 requirements:
-	$(PYTHON) -m pip install -U pip wheel -r requirements.txt -r requirements.dev.txt
+	$(PYTHON) -m pip install -U pip wheel -r requirements.txt -r requirements-dev.txt
 
 format_check:
 	$(PYTHON) -m black --check --diff -- $(TARGET_FOLDERS)
