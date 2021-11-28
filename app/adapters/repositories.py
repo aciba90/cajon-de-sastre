@@ -31,12 +31,12 @@ class WordMongoRepo(WordRepo):
     def get(self, word: str) -> Word:
         word_data = self._session.client.app.words.find_one(
             {"word": word},
+            {"_id": 0},
             session=self._session,
         )
         if word_data is None:
             # TODO handle
             pass
-        word_data.pop("_id", None)
         return Word(**word_data)
 
     def list(self) -> Iterator[Word]:

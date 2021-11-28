@@ -30,6 +30,7 @@ def get_word(word: str, uow: UnitOfWork) -> models.Word:
 def patch_word(word: str, position: int, uow: UnitOfWork) -> models.Word:
     with uow:
         return uow.words.get(word)
+        # TODO
 
 
 def get_words(uow: UnitOfWork) -> List[models.Word]:

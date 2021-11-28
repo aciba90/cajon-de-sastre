@@ -8,7 +8,7 @@ def get_api_url() -> str:
 
 
 _CONNECTION_URI = (
-    "mongodb://mongodb1:27317,mongodb2:27017,mongodb3:27017/?replicaSet=rsmongo"
+    "mongodb://mongodb1:27317,mongodb2:27017,mongodb3:27017/app?replicaSet=rsmongo"
 )
 
 

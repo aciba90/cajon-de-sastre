@@ -4,7 +4,8 @@ from app.service import unit_of_work
 
 
 def insert_word(session, word: str, position: int, anagram_hash: int) -> None:
-    session.client.test.words.insert_one({
+    # TODO test db
+    session.client.app.words.insert_one({
             "word": word,
             "position": position,
             "anagram_hash": anagram_hash,
