@@ -4,20 +4,19 @@ import abc
 from typing import Callable
 
 from app.adapters import repositories
-from app.adapters.repositories import WordMongoRepo
+from app.adapters.repositories import WordDictionaryMongoRepo
 from pymongo.client_session import ClientSession
 from pymongo import MongoClient
 from app.config import get_db_uri
 
 
 class UnitOfWork(abc.ABC):
-    words: repositories.WordRepo
+    words: repositories.Repository
 
     def __enter__(self) -> UnitOfWork:
         return self
 
     def __exit__(self, *args):
-        # self.rollback()
         ...
 
     @abc.abstractmethod
@@ -48,15 +47,13 @@ class MongoUnitOfWork(UnitOfWork):
     def __enter__(self):
         self.session = self.session_factory()
         self.session.start_transaction()
-        self.words = WordMongoRepo(self.session)
+        self.words = WordDictionaryMongoRepo(self.session)
         return super().__enter__()
 
     def __exit__(self, *args):
-        # super().__exit__(*args)
         self.session.end_session()
 
     def commit(self):
-        # raise Exception("asd")
         self.session.commit_transaction()
 
     def rollback(self):

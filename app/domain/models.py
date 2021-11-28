@@ -1,7 +1,7 @@
-from dataclasses import dataclass
-from dataclasses_json import dataclass_json
+from __future__ import annotations
 
-from typing import Dict
+from typing import Dict, Sequence, Set
+
 
 
 _lookup: Dict[str, int] = {
@@ -111,3 +111,42 @@ class Word:
             "position": self.position,
             "anagram_hash": self.anagram_hash,
         }
+    
+    @classmethod
+    def from_dict(cls, dict_: Dict) -> Word:
+        return cls(
+            word=dict_["word"],
+            position=dict_["position"],
+            anagram_hash=dict_["anagram_hash"],
+        )
+
+
+class Words:
+    """
+    TODO
+    """
+
+    def __init__(self, version: int, words: Sequence[Word]=None):
+        self._id = "0"
+        self._words: Set[Word] = set(words) if words else set()
+        self._version = version
+
+    def add_word(self, word: Word) -> None:
+        self._words.add(word)
+        # TODO add rules to move positions
+    
+    def to_dict(self) -> Dict:
+        return {
+            "_id": self._id, 
+            "version": self._version,
+            "words": list(map(lambda w: w.to_dict(), self._words)),
+        }
+
+    @classmethod
+    def from_dict(cls, dict_: Dict) -> Words:
+        word_dictionary = cls(
+            version=dict_["version"],
+            words=list(map(lambda w: Word.from_dict(w), dict_["words"])),
+        )
+        word_dictionary._id = dict_["_id"]
+        return word_dictionary

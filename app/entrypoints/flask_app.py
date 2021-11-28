@@ -31,9 +31,8 @@ session = DEFAULT_SESSION_FACTORY()
 
 @app.route("/words", methods=["GET"])
 def list_words():
-    projection = {"_id": False, "word": True}
-    results = session.client.app.words.find(
-        {}, projection=projection, sort=[('position', pymongo.ASCENDING)]
+    projection = {"_id": False, "words": True}
+    results = session.client.app.wordsdictionary.find_one(
+        {"_id": "0"}, projection=projection, sort=[('position', pymongo.ASCENDING)]
     )
-    words = list(map(lambda r: r["word"], results))
-    return {"data": words}
+    return {"data": results["words"]}

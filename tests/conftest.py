@@ -34,11 +34,10 @@ def _get_mongo_session(connection_uri) -> ClientSession:
 
 @pytest.fixture(scope="function")
 def session_factory():
-    session = _get_mongo_session(config.get_db_uri())
-    session.client.drop_database("app")
+    client = MongoClient(config.get_db_uri())
+    client.app.wordsdictionary.update_one({}, {"$set": {"words": []}})
     yield lambda: _get_mongo_session(config.get_db_uri())
-    session.client.drop_database("app")
-
+    client.app.wordsdictionary.update_one({}, {"$set": {"words": []}})
 
 
 @pytest.fixture(scope="function")

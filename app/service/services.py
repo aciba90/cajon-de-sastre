@@ -15,25 +15,17 @@ def add_word(
     position: int,
     uow: UnitOfWork,
 ) -> None:
+    
     anagram_hash = compute_anagram_hash(word)
     word_model = models.Word(word, position, anagram_hash)
     with uow:
-        uow.words.add(word_model)
+        word_dictionary = uow.words.list()
+        word_dictionary.add_word(word_model)
+        uow.words.update(word_dictionary)
         uow.commit()
-
-
-def get_word(word: str, uow: UnitOfWork) -> models.Word:
-    with uow:
-        return uow.words.get(word)
 
 
 def patch_word(word: str, position: int, uow: UnitOfWork) -> models.Word:
     with uow:
         return uow.words.get(word)
         # TODO
-
-
-def get_words(uow: UnitOfWork) -> List[models.Word]:
-    with uow:
-        words = uow.words.list()
-    return list(words)

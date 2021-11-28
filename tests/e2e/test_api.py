@@ -7,7 +7,7 @@ from app import config
 def post_to_words(word: str, postion: int) -> None:
     url = config.get_api_url()
     r = requests.post(f"{url}/words", json={"word": word, "position": postion})
-    assert r.status_code == 201
+    assert r.status_code == 201, r.content
 
 
 @pytest.mark.usefixtures("mongo_db")
