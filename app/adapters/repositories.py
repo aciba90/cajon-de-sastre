@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Iterator, List
+from typing import Iterator
 from app.domain.models import Word
+from dataclasses import asdict
 
 
 class WordRepo(ABC):
@@ -15,25 +16,14 @@ class WordRepo(ABC):
         ...
 
 
-class WordFakeRepo(WordRepo):
-    """TODO"""
+class WordMongoRepo(WordRepo):
+    def __init__(self, session):
+        self._session = session
 
-    def __init__(self):
-        self._data: List[Word] = []
+    def add(self, word: Word) -> None:
+        payload = asdict(word)
+        _ = self._session.client.app.words.insert_one(payload, session=self._session)
 
-    def add(self, word: Word):
-        """[summary]
-
-        :param word: [description]
-        :type word: Word
-        """
-        self._data.append(word.to_dict())
-
-    def get_all(self) -> Iterator[Word]:
-        """[summary]
-
-        :yield: [description]
-        :rtype: Iterator[Word]
-        """
-        for word in self._data:
-            yield word
+    def list(self) -> Iterator[Word]:
+        for x in self._session.client.app.words.find(session=self._session):
+            yield x

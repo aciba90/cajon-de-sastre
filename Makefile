@@ -12,7 +12,7 @@ format:
 	$(PYTHON) -m black -- $(TARGET_FOLDERS)
 
 lint:
-	$(PYTHON) -m mypy -- $(TARGET_FOLDERS)
+	$(PYTHON) -m mypy  -- $(TARGET_FOLDERS)
 	$(PYTHON) -m flake8 -- $(TARGET_FOLDERS)
 	# $(PYTHON) -m pylint -- app
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.service import unit_of_work
+from app.service.unit_of_work import UnitOfWork
 from app.domain import models
 from app.domain.models import compute_anagram_hash
 from typing import List
@@ -11,7 +11,9 @@ def is_valid_sku(sku, batches):
 
 
 def add_word(
-    word: str, position: str, uow: unit_of_work.AbstractUnitOfWork,
+    word: str,
+    position: int,
+    uow: UnitOfWork,
 ) -> None:
     anagram_hash = compute_anagram_hash(word)
     word_model = models.Word(word, position, anagram_hash)
@@ -20,7 +22,7 @@ def add_word(
         uow.commit()
 
 
-def get_words(uow: unit_of_work.AbstractUnitOfWork) -> List[models.Word]:
+def get_words(uow: UnitOfWork) -> List[models.Word]:
     with uow:
         words = uow.words.list()
-    return words
+    return list(words)

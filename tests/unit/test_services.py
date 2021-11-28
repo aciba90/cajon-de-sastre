@@ -1,4 +1,3 @@
-import pytest
 from app.adapters import repositories
 from app.service import services, unit_of_work
 
