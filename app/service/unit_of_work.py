@@ -27,6 +27,9 @@ class UnitOfWork(abc.ABC):
     def rollback(self):
         raise NotImplementedError
 
+    def collect_new_events(self):
+        return []
+
 
 _CONNECTION_URI = get_db_uri()
 

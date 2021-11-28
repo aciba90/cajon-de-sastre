@@ -3,17 +3,17 @@ from flask import Flask, request
 from app.service import services, unit_of_work
 from app.service.unit_of_work import DEFAULT_SESSION_FACTORY
 import pymongo
+from app import bootstrap, views
+from app.domain import commands
 
 app = Flask(__name__)
+bus = bootstrap.bootstrap()
 
 
 @app.route("/words", methods=["POST"])
 def add_word():
-    services.add_word(
-        request.json["word"],
-        request.json["position"],
-        unit_of_work.MongoUnitOfWork(),
-    )
+    cmd = commands.CreateWord(request.json["word"], request.json["position"])
+    bus.handle(cmd)
     return "OK", 201
 
 
