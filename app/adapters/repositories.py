@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Iterator
 from app.domain.models import Word
-from dataclasses import asdict
 
 
 class WordRepo(ABC):
@@ -25,7 +24,7 @@ class WordMongoRepo(WordRepo):
         self._session = session
 
     def add(self, word: Word) -> None:
-        payload = asdict(word)
+        payload = word.to_dict()
         _ = self._session.client.app.words.insert_one(payload, session=self._session)
 
     def get(self, word: str) -> Word:

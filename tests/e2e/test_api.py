@@ -14,7 +14,7 @@ def post_to_words(word: str, postion: int) -> None:
 def test_happy_path_returns_201_and_added_word():
     url = config.get_api_url()
     r = requests.post(f"{url}/words", json={"word": "asdf", "position": 0})
-    assert r.status_code == 201
+    assert r.status_code == 201, r.content
 
 
 @pytest.mark.xfail

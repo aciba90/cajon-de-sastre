@@ -83,13 +83,31 @@ def compute_anagram_hash(word: str) -> int:
     return anagram_hash
 
 
-@dataclass_json
-@dataclass(frozen=True)
 class Word:
     """
     TODO
     """
 
-    word: str
-    position: int
-    anagram_hash: int
+    def __init__(self, word: str, position: int, anagram_hash: int):
+        self._word=word
+        self.position=position
+        self.anagram_hash=anagram_hash
+    
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Word):
+            return False
+        return self._word == other._word
+
+    def __hash__(self) -> int:
+        return hash(self._word)
+
+    @property
+    def word(self) -> str:
+        return self._word
+
+    def to_dict(self) -> Dict:
+        return {
+            "word": self.word,
+            "position": self.position,
+            "anagram_hash": self.anagram_hash,
+        }
