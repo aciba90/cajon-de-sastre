@@ -1,14 +1,16 @@
 # pylint: disable=no-self-use
 from __future__ import annotations
+
 from collections import defaultdict
 from datetime import date
 from typing import Dict, List
+
 import pytest
 from app import bootstrap
-from app.domain import commands
 from app.adapters import repositories
-from app.service import unit_of_work
+from app.domain import commands
 from app.domain.models import Words
+from app.service import unit_of_work
 
 
 class FakeRepository(repositories.Repository):
@@ -46,4 +48,3 @@ class TestAddWord:
         bus = bootstrap_test_app()
         bus.handle(commands.CreateWord("asdf", 0))
         assert bus.uow.committed
-

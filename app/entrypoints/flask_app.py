@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 from app.service import services, unit_of_work
 from app.service.unit_of_work import DEFAULT_SESSION_FACTORY
@@ -31,8 +31,5 @@ session = DEFAULT_SESSION_FACTORY()
 
 @app.route("/words", methods=["GET"])
 def list_words():
-    projection = {"_id": False, "words": True}
-    results = session.client.app.wordsdictionary.find_one(
-        {"_id": "0"}, projection=projection, sort=[('position', pymongo.ASCENDING)]
-    )
-    return {"data": results["words"]}
+    result = views.words(bus.uow)
+    return jsonify(result), 200
