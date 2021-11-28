@@ -20,7 +20,7 @@ test:
 	$(PYTHON) -m pytest -vv --doctest-modules -- $(TARGET_FOLDERS)
 
 d_test:
-	docker-compose run api make requirements test
+	docker-compose run api make test
 
 up:
 	docker-compose up -d

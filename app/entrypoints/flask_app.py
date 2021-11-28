@@ -13,3 +13,13 @@ def add_word():
         unit_of_work.MongoUnitOfWork(),
     )
     return "OK", 201
+
+
+@app.route("/words/<string:word>", methods=["PATCH"])
+def patch_word(word: str):
+    word = services.patch_word(
+        word,
+        request.json["position"],
+        unit_of_work.MongoUnitOfWork(),
+    )
+    return {"word": word.word, "position": word.position}

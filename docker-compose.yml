@@ -7,9 +7,7 @@ services:
       ports:
         - "0.0.0.0:5000:5000"
       environment:
-        - POSTGRES_NAME=postgres
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
+        - FLASK_ENV=development
       depends_on:
         - mongodb1
         - mongodb2

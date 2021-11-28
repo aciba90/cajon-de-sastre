@@ -22,6 +22,16 @@ def add_word(
         uow.commit()
 
 
+def get_word(word: str, uow: UnitOfWork) -> models.Word:
+    with uow:
+        return uow.words.get(word)
+
+
+def patch_word(word: str, position: int, uow: UnitOfWork) -> models.Word:
+    with uow:
+        return uow.words.get(word)
+
+
 def get_words(uow: UnitOfWork) -> List[models.Word]:
     with uow:
         words = uow.words.list()

@@ -32,6 +32,12 @@ def _get_mongo_session(connection_uri) -> ClientSession:
     return MongoClient(connection_uri).start_session()
 
 
+@pytest.fixture
+def session_factory():
+    # Create testing db, init and teardown
+    yield lambda: _get_mongo_session(config.get_db_uri())
+
+
 @pytest.fixture(scope="session")
 def mongo_db():
     session = _get_mongo_session(config.get_db_uri())
