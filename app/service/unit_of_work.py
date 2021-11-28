@@ -7,6 +7,7 @@ from app.adapters import repositories
 from app.adapters.repositories import WordMongoRepo
 from pymongo.client_session import ClientSession
 from pymongo import MongoClient
+from app.config import get_db_uri
 
 
 class UnitOfWork(abc.ABC):
@@ -28,16 +29,14 @@ class UnitOfWork(abc.ABC):
         raise NotImplementedError
 
 
-CONNECTION_URI = (
-    "mongodb://mongodb1:27317,mongodb2:27017,mongodb3:27017/?replicaSet=rsmongo"
-)
+_CONNECTION_URI = get_db_uri()
 
 
-def get_mongo_client(connection_uri: str = CONNECTION_URI) -> MongoClient:
+def get_mongo_session(connection_uri: str = _CONNECTION_URI) -> ClientSession:
     return MongoClient(connection_uri).start_session()
 
 
-DEFAULT_SESSION_FACTORY = get_mongo_client
+DEFAULT_SESSION_FACTORY = get_mongo_session
 
 
 class MongoUnitOfWork(UnitOfWork):

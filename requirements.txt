@@ -1,3 +1,4 @@
 dataclasses-json
+flask
 inject
 pymongo

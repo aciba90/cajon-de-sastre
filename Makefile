@@ -12,9 +12,18 @@ format:
 	$(PYTHON) -m black -- $(TARGET_FOLDERS)
 
 lint:
-	$(PYTHON) -m mypy  -- $(TARGET_FOLDERS)
+	$(PYTHON) -m mypy --install-types --non-interactive -- $(TARGET_FOLDERS)
 	$(PYTHON) -m flake8 -- $(TARGET_FOLDERS)
 	# $(PYTHON) -m pylint -- app
 
 test:
 	$(PYTHON) -m pytest -vv --doctest-modules -- $(TARGET_FOLDERS)
+
+d_test:
+	docker-compose run api make requirements test
+
+up:
+	docker-compose up -d
+
+down:
+	docker-compose down --remove-orphans
