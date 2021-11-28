@@ -1,3 +1,4 @@
+# TODO remove
 from app.adapters import repositories
 from app.service import services, unit_of_work
 from app.domain.models import Word, Words
@@ -30,12 +31,6 @@ class FakeUnitOfWork(unit_of_work.UnitOfWork):
 
     def rollback(self):
         pass
-
-
-def test_add_word():
-    uow = FakeUnitOfWork()
-    services.add_word("asdf", 0, uow)
-    assert uow.committed
 
 
 @pytest.mark.xfail
