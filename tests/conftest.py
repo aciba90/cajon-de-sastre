@@ -22,7 +22,7 @@ def wait_for_mongo_to_come_up(session: ClientSession):
     deadline = time.time() + 10
     while time.time() < deadline:
         try:
-            return session.client.admin.command('ping')
+            return session.client.admin.command("ping")
         except ConnectionFailure:
             time.sleep(0.5)
     pytest.fail("Mongo never came up")
@@ -35,9 +35,9 @@ def _get_mongo_session(connection_uri) -> ClientSession:
 @pytest.fixture(scope="function")
 def session_factory():
     client = MongoClient(config.get_db_uri())
-    client.app.wordsdictionary.update_one({}, {"$set": {"words": []}})
+    client.app.drop_collection("word")
     yield lambda: _get_mongo_session(config.get_db_uri())
-    client.app.wordsdictionary.update_one({}, {"$set": {"words": []}})
+    client.app.drop_collection("word")
 
 
 @pytest.fixture(scope="function")

@@ -2,3 +2,4 @@ dataclasses-json
 flask
 inject
 pymongo
+mongoengine
