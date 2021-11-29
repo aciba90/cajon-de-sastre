@@ -72,7 +72,7 @@ def test_concurrent_updates_to_version_are_not_allowed(session_factory):
 
     session = session_factory()
     version = session.client.app.wordsdictionary.find_one({})["version"]
-    assert version == words_dictionary_2._version + 1
+    assert version == words_dictionary_2._words.pop().version + 1
     assert len(exceptions) == 1, exceptions
     [exception] = exceptions
     assert "this operation conflicted with another operation." in str(exception)

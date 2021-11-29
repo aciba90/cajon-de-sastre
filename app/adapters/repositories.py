@@ -19,13 +19,14 @@ class WordDictionaryMongoRepo(Repository):
     def __init__(self, session):
         self._session = session
 
-    def update(self, word_dictionary: Words) -> None:
-        payload = word_dictionary.to_dict()
-        _id = payload.pop("_id")
-        version = payload.pop("version")
-        _ = self._session.client.app.wordsdictionary.update_one(
+    def update(self, word: Word) -> None:
+        word_str = word.word
+        version = word.version or 1
+        word = self._session.client.app.words.find_one({"word": word.word})
+
+        _ = self._session.client.app.words.update_many(
             {
-                "_id": _id,
+                "word": word_str,
                 "version": version
             },
             {
@@ -36,20 +37,10 @@ class WordDictionaryMongoRepo(Repository):
             session=self._session, 
         )
 
-    # def get(self, word: str) -> Word:
-    #     word_data = self._session.client.app.words.find_one(
-    #         {"word": word},
-    #         {"_id": 0},
-    #         session=self._session,
-    #     )
-    #     if word_data is None:
-    #         # TODO handle
-    #         pass
-    #     return Word(**word_data)
 
     def list(self) -> Words:
-        words = self._session.client.app.wordsdictionary.find_one(
-            {"_id": "0"}, projection={"_id": False}, session=self._session
-        )
-        words_ = list(map(lambda w: Word(**w), words["words"]))
+        words = list(self._session.client.app.words.find(
+            {}, projection={"_id": False}, session=self._session
+        ))
+        words_ = list(map(lambda w: Word(**w), words))
         return Words(words=words_, version=words["version"])

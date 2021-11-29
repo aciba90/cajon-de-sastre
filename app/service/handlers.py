@@ -21,14 +21,33 @@ def add_word(
     word_model = models.Word(cmd.word, cmd.position, anagram_hash)
     with uow:
         word_dictionary = uow.words.list()
-        word_dictionary.add_word(word_model)  # TODO if word exists not add
+        added = word_dictionary.add_word(word_model)
+        if not added:
+            # raise Exception("Word alredy added")
+            return  # TODO Create domain event telling word existed
         uow.words.update(word_dictionary)
         uow.commit()
 
+
+def update_word(
+    cmd: commands.CreateWord,
+    uow: UnitOfWork,
+) -> None:
+    anagram_hash = compute_anagram_hash(cmd.word)  # TODO move this to domain
+    word_model = models.Word(cmd.word, cmd.position, anagram_hash)
+    with uow:
+        word_dictionary = uow.words.list()
+        added = word_dictionary.update_word(word_model)
+        if not added:
+            raise Exception("Word not present while updating")
+            return  # TODO Create domain event telling n("Word not present while updating
+        uow.words.update(word_dictionary)
+        uow.commit()
 
 
 EVENT_HANDLERS: Dict[Type[events.Event], List[Callable]] = {}
 
 COMMAND_HANDLERS: Dict[Type[commands.Command], Callable] = {
     commands.CreateWord: add_word,
+    commands.UpdateWord: update_word,
 }

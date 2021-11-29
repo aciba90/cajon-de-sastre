@@ -1,8 +1,6 @@
 from flask import Flask, request, jsonify
 
-from app.service import services, unit_of_work
-from app.service.unit_of_work import DEFAULT_SESSION_FACTORY
-import pymongo
+from app.service import unit_of_work
 from app import bootstrap, views
 from app.domain import commands
 
@@ -19,15 +17,11 @@ def add_word():
 
 @app.route("/words/<string:word>", methods=["PATCH"])
 def patch_word(word: str):
-    word = services.patch_word(
-        word,
-        request.json["position"],
-        unit_of_work.MongoUnitOfWork(),
-    )
-    return {"word": word.word, "position": word.position}
+    cmd = commands.CreateWord(request.json["word"], request.json["position"])
+    bus.handle(cmd)
+    views.get_word(word, bus.uow)
+    return {"word": word_.word, "position": word_.position}
 
-
-session = DEFAULT_SESSION_FACTORY()
 
 @app.route("/words", methods=["GET"])
 def list_words():

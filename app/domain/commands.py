@@ -10,3 +10,9 @@ class Command:
 class CreateWord(Command):
     word: str
     position: int
+
+
+@dataclass
+class UpdateWord(Command):
+    word: str
+    position: int

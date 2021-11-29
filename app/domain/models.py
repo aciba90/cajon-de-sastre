@@ -88,10 +88,11 @@ class Word:
     TODO
     """
 
-    def __init__(self, word: str, position: int, anagram_hash: int):
+    def __init__(self, word: str, position: int, anagram_hash: int, version: int=1):
         self._word=word
         self.position=position
         self.anagram_hash=anagram_hash
+        self._version = version
     
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Word):
@@ -105,11 +106,16 @@ class Word:
     def word(self) -> str:
         return self._word
 
+    @property
+    def version(self) -> str:
+        return self._version
+
     def to_dict(self) -> Dict:
         return {
             "word": self.word,
             "position": self.position,
             "anagram_hash": self.anagram_hash,
+            "version": self.version,
         }
     
     @classmethod
@@ -118,6 +124,7 @@ class Word:
             word=dict_["word"],
             position=dict_["position"],
             anagram_hash=dict_["anagram_hash"],
+            version=dict_["version"],
         )
 
 
@@ -126,26 +133,35 @@ class Words:
     TODO
     """
 
-    def __init__(self, version: int, words: Sequence[Word]=None):
+    def __init__(self, words: Sequence[Word]=None):
         self._id = "0"
         self._words: Set[Word] = set(words) if words else set()
-        self._version = version
 
-    def add_word(self, word: Word) -> None:
+    def add_word(self, word: Word) -> bool:
+        if word in self._words:
+            return False
         self._words.add(word)
+        return True
         # TODO add rules to move positions
+
+    def update_word(self, word: Word) -> bool:
+        if word not in self._words:
+            raise Exception  # Raise event/command
+        word_in_db = self._words[word._word]
+        if word_in_db.position == word.position:
+            return False
+        self._words[word._word].position = word.position
+        return True
     
     def to_dict(self) -> Dict:
         return {
             "_id": self._id, 
-            "version": self._version,
             "words": list(map(lambda w: w.to_dict(), self._words)),
         }
 
     @classmethod
     def from_dict(cls, dict_: Dict) -> Words:
         word_dictionary = cls(
-            version=dict_["version"],
             words=list(map(lambda w: Word.from_dict(w), dict_["words"])),
         )
         word_dictionary._id = dict_["_id"]
