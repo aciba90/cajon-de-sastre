@@ -1,5 +1,4 @@
 import threading
-from app.services import Word
 from pymongo import MongoClient
 from typing import List
 import time
@@ -9,13 +8,20 @@ def update_word(word: str, position: int, client: MongoClient, exceptions):
     lock_version = client.app.lock.find_one({"_id": 0})
     time.sleep(1)  # Simulate slow function
     try:
-        client.app.lock.update_one({"_id": 0, "version": lock_version["version"]}, {"$inc": {"version": 1}}, upsert=True)
+        client.app.lock.update_one(
+            {"_id": 0, "version": lock_version["version"]},
+            {"$inc": {"version": 1}},
+            upsert=True,
+        )
     except Exception as e:
         exceptions.append(e)
         raise
-    position_old = Word.objects(word=word).first().position
-    Word.objects(position__gte=position_old).update(inc__position=1)
-    Word.objects(word=word).update_one(position=position)
+    position_old = client.app.word.find_one({"word": word})["position"]
+    client.app.word.update_many(
+        {"position": {"$gte": position_old}},
+        {"$inc": {"position": 1}},
+    )
+    client.app.word.update_one({"word": word}, {"$set": {"position": position}})
     return word, position
 
 

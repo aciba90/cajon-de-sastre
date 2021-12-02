@@ -49,5 +49,6 @@ def mongo_db(session_factory):
 
 @pytest.fixture
 def mogo_client():
-    from app.flask_app import client
-    yield client
+    from app.dependencies import _client
+
+    yield _client
