@@ -45,3 +45,9 @@ def mongo_db(session_factory):
     session = session_factory()
     wait_for_mongo_to_come_up(session)
     yield session
+
+
+@pytest.fixture
+def mogo_client():
+    from app.flask_app import client
+    yield client
