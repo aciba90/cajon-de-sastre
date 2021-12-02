@@ -10,4 +10,9 @@ post 2 equal words
 
 patch 2 equal words at the same time
 
-xfail
+tests
+error handling
+documentation
+readme
+
+

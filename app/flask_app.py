@@ -4,6 +4,7 @@ from flask import Flask, jsonify, request
 from app import services, views
 
 from app.dependencies import get_repo
+from app.core import Word
 
 
 repo = get_repo()
@@ -40,5 +41,6 @@ def list_words():
 
 @app.route("/words/<string:word>/anagrams", methods=["GET"])
 def get_anagrams(word: str):
-    word_list = views.get_anagrams(word, repo.client)
+    anagram_hash = Word(word, -1).anagram_hash
+    word_list = views.get_anagrams(anagram_hash, repo.client)
     return jsonify({"data": word_list}), 200

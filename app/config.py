@@ -13,5 +13,4 @@ _CONNECTION_URI = (
 
 
 def get_db_uri() -> str:
-    # TODO get from env
-    return _CONNECTION_URI
+    return os.environ.get("CONNECTION_URI", _CONNECTION_URI)
