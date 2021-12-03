@@ -33,8 +33,12 @@ def test_concurrent_updates_to_version_are_not_allowed(mogo_client):
 
     exceptions: List[Exception] = []
 
-    try_to_update_word_2 = lambda: update_word(*word_1, mogo_client, exceptions)
-    try_to_update_word_1 = lambda: update_word(*word_1, mogo_client, exceptions)
+    try_to_update_word_2 = lambda: update_word(  # noqa: E731
+        *word_1, mogo_client, exceptions
+    )
+    try_to_update_word_1 = lambda: update_word(  # noqa: E731
+        *word_1, mogo_client, exceptions
+    )
     thread1 = threading.Thread(target=try_to_update_word_1)
     thread2 = threading.Thread(target=try_to_update_word_2)
     thread1.start()

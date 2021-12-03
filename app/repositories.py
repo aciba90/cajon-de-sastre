@@ -1,9 +1,36 @@
+from abc import ABC, abstractmethod
+from typing import Any, Optional
+
 from pymongo import MongoClient
+
 from app.core import Word
-from typing import Optional
 
 
-class Repository:
+class Repository(ABC):
+    """Repository port."""
+
+    client: Any
+
+    @abstractmethod
+    def add(self, word: Word) -> None:
+        """Adds a word."""
+
+    @abstractmethod
+    def get(self, word: str) -> Optional[Word]:
+        """Gets a word."""
+
+    @abstractmethod
+    def update(self, word: Word):
+        """Updates a word."""
+
+    @abstractmethod
+    def delete(self, word: Word):
+        """Deletes a word."""
+
+
+class MongoRepository(Repository):
+    """Mongo repository adapter."""
+
     def __init__(self, client: MongoClient):
         self.client = client
         self._init_db(self.client)
@@ -33,9 +60,9 @@ class Repository:
 
     def get(self, word: str) -> Optional[Word]:
         existing_word = self.client.app.word.find_one({"word": word})
-        if existing_word is not None:
-            return Word(existing_word["word"], existing_word["position"])
-
+        if existing_word is None:
+            return None
+        return Word(existing_word["word"], existing_word["position"])
 
     def update(self, word: Word):
         lock_version = self.client.app.lock.find_one({"_id": 0})
@@ -44,6 +71,8 @@ class Repository:
             {"$inc": {"version": 1}},
         )
         word_old = self.get(word.word)
+        if word_old is None:
+            raise NotImplementedError
         position_old = word_old.position
         self.client.app.word.update_many(
             {"position": {"$gte": position_old}},

@@ -3,15 +3,15 @@
 In order to distinguise anagrams, let's introduce our approach.
 
 Theorem: The Fundamental Theorem of Arithmetic
-Every positive integer different from 1 can be written uniquely as a product of 
+Every positive integer different from 1 can be written uniquely as a product of
 primes.
 
 The strategy is to assing a prime number to each char of our alphabet and given a
-word multiply those numbers. 
-That would be a unique representation (hash) of the set of anagrams of the given word as:
+word multiply those numbers.
+That would be a unique representation (hash) of the set of anagrams of the given word as
     1. Previous theorem.
-    2. As the product of numbers is commutative two words that are anagrams of each other 
-    would have the same product of primes.
+    2. As the product of numbers is commutative two words that are anagrams of each
+    other would have the same product of primes.
 """
 
 from typing import Dict

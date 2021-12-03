@@ -2,3 +2,5 @@ dataclasses-json
 flask
 inject
 pymongo
+flask-marshmallow
+marshmallow

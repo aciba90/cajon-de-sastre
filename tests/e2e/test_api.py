@@ -62,4 +62,11 @@ def test_patch_word_two_times_repeated():
     r = requests.patch(f"{url}/words/cosa", json={"position": 0})
     assert r.status_code == 200
     r = requests.patch(f"{url}/words/cosa", json={"position": 0})
+    assert r.status_code == 200
+
+
+@pytest.mark.usefixtures("mongo_db")
+def test_delete_non_existing_word():
+    url = config.get_api_url()
+    r = requests.delete(f"{url}/words/asdfasdfasd")
     assert r.status_code == 400, str(r.content)
