@@ -103,9 +103,9 @@ class Word:
     """Word domain model"""
 
     def __init__(self, word: str, position: int = -1):
-        self._word=word
-        self.position=position
-    
+        self._word = word
+        self.position = position
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Word):
             return False
@@ -117,7 +117,6 @@ class Word:
     @cached_property
     def word(self) -> str:
         return self._word
-
 
     @cached_property
     def anagram_hash(self) -> int:

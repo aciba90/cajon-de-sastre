@@ -1,18 +1,5 @@
-mongo
-    uuids ?
-    index
-        anagrams
-    pk
-        word: str
-
-post 2 equal words
-    at the same time
-
 patch 2 equal words at the same time
 
 tests
-error handling
 documentation
 readme
-
-

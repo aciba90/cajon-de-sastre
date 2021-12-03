@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from flask import Flask, jsonify, request
 from app import services, views
+from app.services import ExistingWordError, NonExistingWordError
 
 from app.dependencies import get_repo
 from app.core import Word
@@ -16,14 +17,20 @@ app = Flask(__name__)
 def add_word():
     word = request.json["word"]
     position = request.json["position"]
-    services.add_word(word, position, repo)
+    try:
+        services.add_word(word, position, repo)
+    except ExistingWordError as e:
+        return {"message": str(e)}, 400
     return {"word": word, "position": position}, 201
 
 
 @app.route("/words/<string:word>", methods=["PATCH"])
 def patch_word(word: str):
     position = request.json["position"]
-    services.update_word(word, position, repo)
+    try:
+        services.update_word(word, position, repo)
+    except NonExistingWordError as e:
+        return {"message": str(e)}, 400
     return jsonify({"word": word, "position": position}), 200
 
 
