@@ -30,6 +30,8 @@ up:
 down:
 	docker-compose down --remove-orphans
 
+all: up format_check lint d_test down
+
 clean:
 	find . -type f -name '*.py[co]' -delete -o -type d -name '__pycache__' -delete
 	rm -rf .mypy_cache .pytest_cache

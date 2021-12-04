@@ -22,12 +22,7 @@ Use the make targets to execute different tools as the formater, linters, tests 
 your virtual env or within a docker container:
 
 ```sh
-docker-compose run api bash
-# or
-source ./venv/bin/activate
-
-make format
-make format_check lint d_test
+make all
 ```
 
 * Black and isort for code formatting.

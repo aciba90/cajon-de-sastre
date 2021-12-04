@@ -1,7 +1,9 @@
 black
 flake8
 ipython
+isort
 mypy
+notebook
 pylint
 pytest
 requests
