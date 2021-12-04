@@ -1,4 +1,8 @@
-"""CQRS pattern"""
+"""CQRS pattern.
+
+This is an exception to the repo patter indirecto to favor simplified and optimized
+data acccess for query views.
+"""
 from typing import List
 
 from pymongo import ASCENDING, MongoClient

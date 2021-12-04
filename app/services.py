@@ -1,3 +1,4 @@
+"""Services to be used by different entrypoints (Flask, a CLI, etc)"""
 from app.core import Word
 from app.repositories import Repository
 

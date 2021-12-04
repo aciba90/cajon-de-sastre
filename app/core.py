@@ -100,7 +100,7 @@ def _compute_anagram_hash(word: str) -> int:
 
 
 class Word:
-    """Word domain model"""
+    """Word domain entity model"""
 
     def __init__(self, word: str, position: int = -1):
         self._word = word
@@ -116,8 +116,10 @@ class Word:
 
     @cached_property
     def word(self) -> str:
+        """The actual word."""
         return self._word
 
     @cached_property
     def anagram_hash(self) -> int:
+        """Its anagram hash."""
         return _compute_anagram_hash(self._word)

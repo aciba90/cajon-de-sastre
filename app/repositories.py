@@ -1,3 +1,8 @@
+"""Repositories module.
+
+Here we implement ports and adapters for the data access layer in order to isolate the
+rest of the system from the fact that we use MongoDB.
+"""
 from abc import ABC, abstractmethod
 from typing import Any, Optional
 

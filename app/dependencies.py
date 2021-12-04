@@ -1,3 +1,4 @@
+"""Project dependencies."""
 from pymongo import MongoClient
 
 from app.config import get_db_uri

@@ -1,3 +1,4 @@
+"""Flask entrypoint."""
 from __future__ import annotations
 
 from flask import Flask, jsonify, request
@@ -28,8 +29,8 @@ def add_word():
     position = data["position"]
     try:
         services.add_word(word, position, repo)
-    except ExistingWordError as e:
-        return {"message": str(e)}, 400
+    except ExistingWordError as ex:
+        return {"message": str(ex)}, 400
     return {"word": word, "position": position}, 201
 
 
@@ -48,8 +49,8 @@ def patch_word(word: str):
     position = data["position"]
     try:
         services.update_word(word, position, repo)
-    except NonExistingWordError as e:
-        return {"message": str(e)}, 400
+    except NonExistingWordError as ex:
+        return {"message": str(ex)}, 400
     return jsonify({"word": word, "position": position}), 200
 
 
@@ -58,8 +59,8 @@ def delete_word(word: str):
     """Deletes a word."""
     try:
         services.delete_word(word, repo)
-    except NonExistingWordError as e:
-        return {"message": str(e)}, 400
+    except NonExistingWordError as ex:
+        return {"message": str(ex)}, 400
     return "Deleted", 204
 
 
