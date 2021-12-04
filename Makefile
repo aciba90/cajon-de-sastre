@@ -2,10 +2,6 @@
 PYTHON=python
 TARGET_FOLDERS=app tests
 
-clean:
-	find . -type f -name '*.py[co]' -delete -o -type d -name '__pycache__' -delete
-	rm -rf .mypy_cache .pytest_cache
-
 requirements:
 	$(PYTHON) -m pip install -U pip wheel -r requirements.txt -r requirements-dev.txt
 
@@ -33,3 +29,13 @@ up:
 
 down:
 	docker-compose down --remove-orphans
+
+clean:
+	find . -type f -name '*.py[co]' -delete -o -type d -name '__pycache__' -delete
+	rm -rf .mypy_cache .pytest_cache
+	rm -rf dist
+
+dist: clean
+	mkdir dist
+	zip -r -9 dist/alberto_contreras_plitix.zip -- $$(ls -a | grep --invert-match -E "venv|.vscode|.idea|.git$$|^\.+$$")
+	tar cavf dist/alberto_contreras_plytix.tar.xz -- $$(ls -a | grep --invert-match -E "venv|.vscode|.idea|.git$$|^\.+$$")
