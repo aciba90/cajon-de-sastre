@@ -14,7 +14,6 @@ format:
 lint:
 	$(PYTHON) -m mypy --install-types --non-interactive -- $(TARGET_FOLDERS)
 	$(PYTHON) -m flake8 -- $(TARGET_FOLDERS)
-	# $(PYTHON) -m pylint -- app
 
 test:
 	$(PYTHON) -m pytest -vv --doctest-modules -- $(TARGET_FOLDERS)
