@@ -46,6 +46,9 @@ and use a different one for testing.
 
 * CI / CD
 
+* Create Python packages to make a more explicit distinction between layers
+(core/service/apaters/entrypoints)
+
 * For the shake of simplicity we implementd a collection array to store the
 words and a hand made optimistic loking solution to avoid concurrent updates.
 We could improve this by using
