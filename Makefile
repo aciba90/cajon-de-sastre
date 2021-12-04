@@ -21,6 +21,9 @@ lint:
 test:
 	$(PYTHON) -m pytest -vv --doctest-modules -- $(TARGET_FOLDERS)
 
+d_all:
+	docker-compose run api make format_check lint test
+
 d_test:
 	docker-compose run api make test
 
@@ -30,7 +33,7 @@ up:
 down:
 	docker-compose down --remove-orphans
 
-all: up format_check lint d_test down
+all: up d_all down
 
 clean:
 	find . -type f -name '*.py[co]' -delete -o -type d -name '__pycache__' -delete

@@ -13,8 +13,9 @@ That would be a unique representation (hash) of the set of anagrams of the given
     2. As the product of numbers is commutative two words that are anagrams of each
     other would have the same product of primes.
 
-In order to implement this we define a mapping between chars and prime numbers (_lookup).
-The chars not considered at the moment use the number 1 thus those chars are not 
+In order to implement this we define a mapping between chars and prime
+numbers (_lookup).
+The chars not considered at the moment use the number 1 thus those chars are not
 considered for the anagram computation.
 
 To extend the char alphabet we can add the new chars with new prime numbers, keeping the

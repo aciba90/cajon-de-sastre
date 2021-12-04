@@ -4,7 +4,8 @@ Solution to the Plytix problem. This API stores a list of words with position
 and is able to retrieve anagrams of seen or not seen word.
 
 We use a Ports and Adapters architecture to isolate the core/domain, data,
-entrypoints and service layers. By assuming this complexity we gain maintainability, extensibility and testability.
+entrypoints and service layers. By assuming this complexity we gain maintainability,
+extensibility and testability.
 
 ## Execution
 
