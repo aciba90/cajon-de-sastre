@@ -2,6 +2,10 @@
 PYTHON=python
 TARGET_FOLDERS=app tests
 
+clean:
+	find . -type f -name '*.py[co]' -delete -o -type d -name '__pycache__' -delete
+	rm -rf .mypy_cache .pytest_cache
+
 requirements:
 	$(PYTHON) -m pip install -U pip wheel -r requirements.txt -r requirements-dev.txt
 
