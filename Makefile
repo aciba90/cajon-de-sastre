@@ -6,9 +6,11 @@ requirements:
 	$(PYTHON) -m pip install -U pip wheel -r requirements.txt -r requirements-dev.txt
 
 format_check:
+	$(PYTHON) -m isort **/*.py -c
 	$(PYTHON) -m black --check --diff -- $(TARGET_FOLDERS)
 
 format:
+	$(PYTHON) -m isort **/*.py
 	$(PYTHON) -m black -- $(TARGET_FOLDERS)
 
 lint:

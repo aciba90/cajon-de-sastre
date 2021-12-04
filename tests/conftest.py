@@ -1,10 +1,12 @@
-import pytest
 import time
+
+import pytest
 import requests
-from app import config
 from pymongo import MongoClient
 from pymongo.client_session import ClientSession
 from pymongo.errors import ConnectionFailure
+
+from app import config
 
 
 def wait_for_webapp_to_come_up():

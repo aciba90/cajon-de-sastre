@@ -1,7 +1,7 @@
 """Prime generator"""
-from sympy import prime
 from string import ascii_lowercase, ascii_uppercase
 
+from sympy import prime
 
 primes_lookup = dict()
 for i, (letter_up, letter_down) in enumerate(zip(ascii_uppercase, ascii_lowercase)):

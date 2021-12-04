@@ -1,6 +1,7 @@
 """CQRS pattern"""
-from pymongo import MongoClient, ASCENDING
 from typing import List
+
+from pymongo import ASCENDING, MongoClient
 
 
 def list_words(client: MongoClient) -> List[str]:

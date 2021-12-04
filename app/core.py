@@ -14,8 +14,8 @@ That would be a unique representation (hash) of the set of anagrams of the given
     other would have the same product of primes.
 """
 
+from functools import cached_property, lru_cache
 from typing import Dict
-from functools import lru_cache, cached_property
 
 _lookup: Dict[str, int] = {
     "A": 2,

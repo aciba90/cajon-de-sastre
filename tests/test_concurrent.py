@@ -1,7 +1,8 @@
 import threading
-from pymongo import MongoClient
-from typing import List
 import time
+from typing import List
+
+from pymongo import MongoClient
 
 
 def update_word(word: str, position: int, client: MongoClient, exceptions):
