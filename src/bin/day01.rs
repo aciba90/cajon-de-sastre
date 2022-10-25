@@ -1,6 +1,6 @@
 use std::{collections::HashSet, fs, io};
 
-const FILENAME: &str = "input.txt";
+const FILENAME: &str = "data/day01.txt";
 
 fn main() -> io::Result<()> {
     let data = fs::read_to_string(FILENAME)?;
@@ -32,7 +32,7 @@ fn part2(data: &str) -> io::Result<i128> {
 }
 
 #[cfg(test)]
-mod tests {
+mod day01 {
     use super::*;
 
     #[test]

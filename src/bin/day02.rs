@@ -7,7 +7,7 @@ fn main() {
 }
 
 fn read_input() -> String {
-    fs::read_to_string("input.txt").unwrap()
+    fs::read_to_string("data/day02.txt").unwrap()
 }
 
 fn part1(data: &str) -> i32 {
