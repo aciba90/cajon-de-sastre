@@ -1,12 +1,10 @@
-use std::{collections::HashSet, fs, io};
+use std::{collections::HashSet, io};
 
-const FILENAME: &str = "data/day01.txt";
+const DATA: &str = include_str!(aoc::locate_data!("2018", "01"));
 
 fn main() -> io::Result<()> {
-    let data = fs::read_to_string(FILENAME)?;
-
-    println!("{:?}", part1(&data)?);
-    println!("{:?}", part2(&data)?);
+    println!("{:?}", part1(DATA)?);
+    println!("{:?}", part2(DATA)?);
     Ok(())
 }
 
@@ -37,13 +35,11 @@ mod day01 {
 
     #[test]
     fn test_part1() {
-        let data = fs::read_to_string(FILENAME).unwrap();
-        assert_eq!(538, part1(&data).unwrap());
+        assert_eq!(538, part1(DATA).unwrap());
     }
 
     #[test]
     fn test_part2() {
-        let data = fs::read_to_string(FILENAME).unwrap();
-        assert_eq!(77271, part2(&data).unwrap());
+        assert_eq!(77271, part2(DATA).unwrap());
     }
 }

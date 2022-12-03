@@ -1,4 +1,7 @@
-use std::{collections::HashMap, fs};
+use aoc::locate_data;
+use std::collections::HashMap;
+
+const DATA: &str = include_str!(locate_data!("2018", "02"));
 
 fn main() {
     let data = read_input();
@@ -7,7 +10,7 @@ fn main() {
 }
 
 fn read_input() -> String {
-    fs::read_to_string("data/day02.txt").unwrap()
+    String::from(DATA)
 }
 
 fn part1(data: &str) -> i32 {
