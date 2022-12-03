@@ -194,6 +194,7 @@ mod day03 {
         assert_eq!(overlapping_coords, expected_coords);
     }
 
+    #[ignore] // XXX: very slow
     #[test]
     fn test_part1() {
         assert_eq!(part1().unwrap(), 118858);
