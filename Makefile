@@ -4,7 +4,7 @@ format:
 	cargo fmt --check
 
 lint:
-	cargo clippy
+	cargo clippy -- --deny warnings
 
 test:
 	cargo test
