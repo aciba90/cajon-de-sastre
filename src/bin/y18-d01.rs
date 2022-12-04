@@ -1,6 +1,6 @@
 use std::{collections::HashSet, io};
 
-const DATA: &str = include_str!(aoc::locate_data!("2018", "01"));
+const DATA: &str = aoc::include_data!("2018", "01");
 
 fn main() -> io::Result<()> {
     println!("{:?}", part1(DATA)?);

@@ -1,7 +1,7 @@
-use aoc::locate_data;
+use aoc::include_data;
 use std::collections::HashMap;
 
-const DATA: &str = include_str!(locate_data!("2018", "02"));
+const DATA: &str = include_data!("2018", "02");
 
 fn main() {
     let data = read_input();

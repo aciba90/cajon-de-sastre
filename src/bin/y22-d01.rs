@@ -1,6 +1,6 @@
-use aoc::locate_data;
+use aoc::include_data;
 
-const DATA: &str = include_str!(locate_data!("2022", "01"));
+const DATA: &str = include_data!("2022", "01");
 
 fn part1(data: &str) -> usize {
     data.split("\n\n")

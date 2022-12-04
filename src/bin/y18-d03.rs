@@ -1,8 +1,8 @@
 use anyhow::{anyhow, Context};
-use aoc::locate_data;
+use aoc::include_data;
 use std::{collections::HashSet, str::FromStr};
 
-const INPUT: &str = include_str!(locate_data!("2018", "03"));
+const INPUT: &str = include_data!("2018", "03");
 
 fn main() -> anyhow::Result<()> {
     println!("Result: {}", part1()?);
