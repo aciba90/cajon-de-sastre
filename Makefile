@@ -1,7 +1,7 @@
-all: format lint test
+all: check format lint test
 
 format:
-	cargo fmt --check
+	cargo fmt --all -- --check
 
 lint:
 	cargo clippy -- --deny warnings
@@ -9,8 +9,8 @@ lint:
 test:
 	cargo test
 
-build:
-	cargo build --release
+check:
+	cargo check
 
 clean:
 	cargo clean
