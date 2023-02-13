@@ -1,6 +1,17 @@
+#!/bin/bash
+
+set -eux
+
+year=${1:-22}
+day=${2-00}
+
+fn="y${year}-d${day}.rs"
+echo "generating file: /tmp/${fn}"
+
+cat > "/tmp/${fn}" <<EOF
 use aoc::include_data;
 
-const DATA: &str = include_data!("20YY", "DD");
+const DATA: &str = include_data!("20${year}", "${day}");
 
 fn part1(data: &str) -> usize {
     todo!()
@@ -16,16 +27,17 @@ fn main() {
 }
 
 #[cfg(test)]
-mod yYY_dDD {
+mod y${year}_d${day} {
     use super::*;
 
     #[test]
     fn test_part1() {
-        assert_eq!(69795usize, part1(DATA));
+        assert_eq!(0usize, part1(DATA));
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(208437usize, part2(DATA));
+        assert_eq!(0usize, part2(DATA));
     }
 }
+EOF
