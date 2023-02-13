@@ -5,10 +5,10 @@ set -eux
 year=${1:-22}
 day=${2-00}
 
-fn="y${year}-d${day}.rs"
-echo "generating file: /tmp/${fn}"
+fn="./src/bin/y${year}-d${day}.rs"
+echo "generating file: ${fn}"
 
-cat > "/tmp/${fn}" <<EOF
+cat > "${fn}" <<EOF
 use aoc::include_data;
 
 const DATA: &str = include_data!("20${year}", "${day}");
