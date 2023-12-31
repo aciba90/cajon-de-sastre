@@ -57,6 +57,6 @@ mod y22_d06 {
 
     #[test]
     fn test_part2() {
-        assert_eq!(0usize, part2(DATA));
+        assert_eq!(3605, part2(DATA));
     }
 }
