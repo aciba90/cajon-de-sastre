@@ -26,11 +26,11 @@ fn detect_start_of_packet_with_distinct_chars(msg: &str, distinct_chars: usize) 
 }
 
 fn detect_start_of_packet_marker(msg: &str) -> Option<usize> {
-    detect_start_of_packet_with_distinct_chars(&msg, 4)
+    detect_start_of_packet_with_distinct_chars(msg, 4)
 }
 
 fn detect_start_of_message_marker(msg: &str) -> Option<usize> {
-    detect_start_of_packet_with_distinct_chars(&msg, 14)
+    detect_start_of_packet_with_distinct_chars(msg, 14)
 }
 
 fn part1(data: &str) -> usize {

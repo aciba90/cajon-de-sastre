@@ -121,18 +121,9 @@ mod y22_d04 {
             AssigmentPair::try_from("2-4,6-8")
         );
 
-        assert_eq!(
-            false,
-            Section::new(2, 8).is_contained_in(&Section::new(3, 7))
-        );
-        assert_eq!(
-            true,
-            Section::new(3, 7).is_contained_in(&Section::new(2, 8))
-        );
-        assert_eq!(
-            true,
-            AssigmentPair::new(Section::new(3, 7), Section::new(2, 8)).full_overlap()
-        );
+        assert!(!Section::new(2, 8).is_contained_in(&Section::new(3, 7)));
+        assert!(Section::new(3, 7).is_contained_in(&Section::new(2, 8)));
+        assert!(AssigmentPair::new(Section::new(3, 7), Section::new(2, 8)).full_overlap());
 
         let input = r#"2-4,6-8
 2-3,4-5

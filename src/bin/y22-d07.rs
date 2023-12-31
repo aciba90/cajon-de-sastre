@@ -61,10 +61,10 @@ fn build_fs_tree(data: &str) -> NodeRef {
             }
         } else {
             // Example: '14848514 b.txt'
-            if let Some((size, _name)) = line.split_once(" ") {
+            if let Some((size, _name)) = line.split_once(' ') {
                 let size: usize = size
                     .parse()
-                    .expect(&format!("Expected file in line: {}", line));
+                    .unwrap_or_else(|_| panic!("Expected file in line: {}", line));
                 (*cd).borrow_mut().size += size;
                 // Backfill every parent. This is probably suboptimal if the number of nodes is
                 // big.
@@ -84,7 +84,7 @@ fn build_fs_tree(data: &str) -> NodeRef {
 }
 
 fn part1(data: &str) -> usize {
-    let root = build_fs_tree(&data);
+    let root = build_fs_tree(data);
     // DFS sum
     let mut res = 0_usize;
     let mut stack = VecDeque::new();
@@ -108,7 +108,7 @@ const AVAILABLE_DISK_SPACE: usize = 70_000_000;
 const UPDATE_REQUIRED_DISK_SPACE: usize = 30_000_000;
 
 fn part2(data: &str) -> usize {
-    let root = build_fs_tree(&data);
+    let root = build_fs_tree(data);
     let unused_space = AVAILABLE_DISK_SPACE - (*root).borrow().size;
 
     if UPDATE_REQUIRED_DISK_SPACE < unused_space {
@@ -172,7 +172,7 @@ $ ls
 
     #[test]
     fn test_example1() {
-        assert_eq!(95437, part1(&EXAMPLE));
+        assert_eq!(95437, part1(EXAMPLE));
     }
 
     #[test]
@@ -182,7 +182,7 @@ $ ls
 
     #[test]
     fn test_example2() {
-        assert_eq!(24933642, part2(&EXAMPLE));
+        assert_eq!(24933642, part2(EXAMPLE));
     }
 
     #[test]

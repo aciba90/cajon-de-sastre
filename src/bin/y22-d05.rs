@@ -141,7 +141,7 @@ move 1 from 1 to 2
 "#;
         let v = vec![String::from("ZN"), String::from("MCD"), String::from("P")];
         let mut ship = Ship::from_vec(v);
-        let steps = read_data(&data);
+        let steps = read_data(data);
         for step in steps.into_iter() {
             ship.move9000(step.n, step.source, step.target);
         }
