@@ -1,0 +1,89 @@
+:root {
+    --main-color: green;
+    --padding-vertical: 0.7em;
+}
+
+* {
+    font-family: sans-serif, Arial;
+}
+
+h1 {
+    color: var(--main-color);
+    width: 100%;
+    text-align: center;
+}
+
+select[multiple] {
+    background-color: transparent;
+    padding: 0 1em 0 0;
+    margin: 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: inherit;
+    border: 2px solid var(--main-color);
+    border-top: 0;
+    padding-right: 0;
+    width: 80%;
+    align-self: flex-end;
+}
+
+.border-green {
+    border: 2px solid var(--main-color);
+}
+
+.container-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.container-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    align-items: center;
+}
+
+.radio-container {
+    margin: 0;
+    justify-content: flex-start;
+    width: 14em;
+    margin: 2em;
+    align-items: stretch;
+}
+
+.radio-container label {
+    border: 2px solid var(--main-color);
+}
+
+.radio-container label, .radio-container option, input[type="submit"] {
+    padding: var(--padding-vertical) 5px;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background: transparent;
+    padding: var(--padding-vertical) 4em;
+}
+
+option:hover {
+    background-color: #dfd;
+}
+
+.margin {
+    margin: 2em;
+}
+
+.wrap {
+    flex-wrap: wrap;
+}
+
+.container-graph {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}

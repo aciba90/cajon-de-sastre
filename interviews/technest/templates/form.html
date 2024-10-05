@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>NBA Stats</h1>
+    <main>
+        <form action="" method="post">
+            <div class="container-column">
+                <div class="container-row border-green">
+                    <div class="container-column wrap">
+                        <div class="container-row wrap">
+                            <div class="radio-container container-column">
+                                <label for="statistics">Statistics to Display</label>
+                                <select name="statistics" id="statistics" size="5"  class="border" multiple required>
+                                    <option value="points">Points per Game</option>
+                                    <option value="assists">Assists per Game</option>
+                                    <option value="rebounds">Rebounds per Game</option>
+                                    <option value="steals">Steals per Game</option>
+                                    <option value="minutes">Minutes per Game</option>
+                                </select>
+                            </div>
+                            <div class="radio-container container-column">
+                                <label for="limits">Limit</label>
+                                <select name="limits" id="limits" size="5" multiple required>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                </select>
+                            </div>
+                            <div class="radio-container container-column">
+                                <label for="arranges">Arrange</label>
+                                <select name="arranges" id="arranges" size="2" multiple required>
+                                    <option value="ascending">Ascending</option>
+                                    <option value="descending">Descending</option>
+                                </select> 
+                            </div>
+                        </div>
+                        <input type="submit" value="SUBMIT" class="border-green margin">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+{% endblock %}
