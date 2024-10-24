@@ -28,12 +28,14 @@ const (
 
 type Task struct {
 	ID            uuid.UUID
+	ContainerID   string
 	Name          string
 	State         State
 	Image         string
-	Memory        int
-	Disk          int
-	ExposedPort   nat.PortSet
+	CPU           float64
+	Memory        int64
+	Disk          int64
+	ExposedPorts  nat.PortSet
 	PortBindings  map[string]string
 	RestartPolicy string
 	StartTime     time.Time
@@ -62,9 +64,32 @@ type Config struct {
 	RestartPolicy string
 }
 
+func NewConfig(t *Task) Config {
+	return Config{
+		Name:          t.Name,
+		ExposedPorts:  t.ExposedPorts,
+		Image:         t.Image,
+		Cpu:           t.CPU,
+		Memory:        t.Memory,
+		Disk:          t.Disk,
+		RestartPolicy: t.RestartPolicy,
+	}
+}
+
 type Docker struct {
 	Client *client.Client
 	Config Config
+}
+
+func NewDocker(c Config) Docker {
+	client, err := client.NewClientWithOpts()
+	if err != nil {
+		log.Fatalf("error creating docker client: %v\n", err)
+	}
+	return Docker{
+		Client: client,
+		Config: c,
+	}
 }
 
 type DockerResult struct {
@@ -138,23 +163,23 @@ func (d *Docker) Run() DockerResult {
 }
 
 func (d *Docker) Stop(id string) DockerResult {
-    log.Printf("Attempting to stop container %v", id)
-    ctx := context.Background()
-    err := d.Client.ContainerStop(ctx, id, container.StopOptions{})
-    if err != nil {
-        log.Printf("Error stopping container %s: %v\n", id, err)
-        return DockerResult{Error: err}
-    }
+	log.Printf("Attempting to stop container %v", id)
+	ctx := context.Background()
+	err := d.Client.ContainerStop(ctx, id, container.StopOptions{})
+	if err != nil {
+		log.Printf("Error stopping container %s: %v\n", id, err)
+		return DockerResult{Error: err}
+	}
 
-    err = d.Client.ContainerRemove(ctx, id, container.RemoveOptions{
-        RemoveVolumes: true,
-        RemoveLinks:   false,
-        Force:         false,
-    })
-    if err != nil {
-        log.Printf("Error removing container %s: %v\n", id, err)
-        return DockerResult{Error: err}
-    }
+	err = d.Client.ContainerRemove(ctx, id, container.RemoveOptions{
+		RemoveVolumes: true,
+		RemoveLinks:   false,
+		Force:         false,
+	})
+	if err != nil {
+		log.Printf("Error removing container %s: %v\n", id, err)
+		return DockerResult{Error: err}
+	}
 
-    return DockerResult{Action: "stop", Result: "success", Error: nil}
+	return DockerResult{Action: "stop", Result: "success", Error: nil}
 }
