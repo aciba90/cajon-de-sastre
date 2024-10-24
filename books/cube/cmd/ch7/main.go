@@ -5,7 +5,6 @@ import (
 	"cube/task"
 	"cube/worker"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"time"
@@ -13,21 +12,6 @@ import (
 	"github.com/golang-collections/collections/queue"
 	"github.com/google/uuid"
 )
-
-func runTasks(w *worker.Worker) {
-	for {
-		if w.Queue.Len() != 0 {
-			result := w.RunTask()
-			if result.Error != nil {
-				log.Printf("Error running task: %v\n", result.Error)
-			}
-		} else {
-			log.Printf("No tasks to procress currently.\n")
-		}
-		log.Println("Sleeping for 10 seconds")
-		time.Sleep(10 * time.Second)
-	}
-}
 
 func main() {
 	host := os.Getenv("CUBE_HOST")
@@ -41,7 +25,7 @@ func main() {
 	}
 	api := worker.Api{Address: host, Port: port, Worker: &w}
 
-	go runTasks(&w)
+	go w.RunTasks()
 	go w.CollectStats()
 	go api.Start()
 
